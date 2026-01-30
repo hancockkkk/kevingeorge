@@ -710,7 +710,7 @@ export default function EverybodysInMyEarPage() {
               preload="auto"
               controls
             >
-              <source src="https://vz-589647.b-cdn.net/e25247a9-ee8f-4549-b180-fc8ed95cf7d0/play_1080p.mp4" type="video/mp4" />
+              <source src="https://vz-589647.b-cdn.net/e25247a9-ee8f-4549-b180-fc8ed95cf7d0/original.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             
