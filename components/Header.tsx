@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 import { siteContent } from "@/content/siteContent";
 import { Instagram, Menu, X, Sun, Moon } from "lucide-react";
 
@@ -59,6 +60,11 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
+
+  // Pages that have their own custom design - don't show theme toggle
+  const customPages = ["/everybodys-in-my-ear", "/my-darlings-a-demon"];
+  const isCustomPage = customPages.includes(pathname);
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -70,7 +76,7 @@ export function Header() {
   };
 
   return (
-    <header className="w-full py-6 px-4 md:px-8 relative z-50 bg-gradient-to-b from-background/80 to-transparent backdrop-blur-sm">
+    <header className="w-full py-6 px-4 md:px-8 relative z-50">
       {/* Social Icons + Theme Toggle */}
       <div className="flex justify-center items-center gap-4 mb-6">
         <a
@@ -128,20 +134,22 @@ export function Header() {
           <YouTubeIcon className="w-5 h-5" />
         </a>
         
-        {/* Theme Toggle */}
-        <div className="w-px h-5 bg-foreground/20 mx-2" />
-        {mounted && (
-          <button
-            onClick={toggleTheme}
-            className="text-foreground hover:opacity-70 transition-all p-1.5 rounded-full hover:bg-foreground/10"
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? (
-              <Sun className="w-5 h-5" />
-            ) : (
-              <Moon className="w-5 h-5" />
-            )}
-          </button>
+        {/* Theme Toggle - Only show on non-custom pages */}
+        {!isCustomPage && mounted && (
+          <>
+            <div className="w-px h-5 bg-foreground/20 mx-2" />
+            <button
+              onClick={toggleTheme}
+              className="text-foreground hover:opacity-70 transition-all p-1.5 rounded-full hover:bg-foreground/10"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+          </>
         )}
       </div>
 
