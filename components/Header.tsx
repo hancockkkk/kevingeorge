@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { siteContent } from "@/content/siteContent";
-import { Instagram, Menu, X } from "lucide-react";
+import { Instagram, Menu, X, Sun, Moon } from "lucide-react";
 
 const navItems = [
   { label: "EPS", href: "/eps" },
@@ -56,11 +57,22 @@ function YouTubeIcon({ className }: { className?: string }) {
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   return (
-    <header className="w-full py-6 px-4 md:px-8 relative z-50 bg-gradient-to-b from-black/60 to-transparent">
-      {/* Social Icons */}
-      <div className="flex justify-center gap-4 mb-6">
+    <header className="w-full py-6 px-4 md:px-8 relative z-50 bg-gradient-to-b from-background/80 to-transparent backdrop-blur-sm">
+      {/* Social Icons + Theme Toggle */}
+      <div className="flex justify-center items-center gap-4 mb-6">
         <a
           href={siteContent.socialLinks.instagram}
           target="_blank"
@@ -115,6 +127,22 @@ export function Header() {
         >
           <YouTubeIcon className="w-5 h-5" />
         </a>
+        
+        {/* Theme Toggle */}
+        <div className="w-px h-5 bg-foreground/20 mx-2" />
+        {mounted && (
+          <button
+            onClick={toggleTheme}
+            className="text-foreground hover:opacity-70 transition-all p-1.5 rounded-full hover:bg-foreground/10"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? (
+              <Sun className="w-5 h-5" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
+          </button>
+        )}
       </div>
 
       {/* Desktop Navigation */}
