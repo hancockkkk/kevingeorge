@@ -9,6 +9,7 @@ export default function EverybodysInMyEarPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [showVideoOverlay, setShowVideoOverlay] = useState(true); // Separate state for overlay
   
   // Audio player state
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -370,6 +371,7 @@ export default function EverybodysInMyEarPage() {
         } else {
           await videoRef.current.play();
           setIsVideoPlaying(true);
+          setShowVideoOverlay(false); // Hide overlay once user clicks play
         }
       } catch (error) {
         console.log('Video play error:', error);
@@ -713,8 +715,8 @@ export default function EverybodysInMyEarPage() {
               Your browser does not support the video tag.
             </video>
             
-            {/* Play/Pause Overlay - Only clickable when paused */}
-            {!isVideoPlaying && (
+            {/* Play/Pause Overlay - Only shows on initial load */}
+            {showVideoOverlay && !isVideoPlaying && (
               <div 
                 className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm cursor-pointer"
                 onClick={toggleVideo}
