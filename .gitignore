@@ -26,6 +26,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# large media files
-/public/videos/
+# large media files (audio files only)
 /public/audio/
