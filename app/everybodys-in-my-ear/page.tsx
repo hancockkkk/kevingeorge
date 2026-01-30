@@ -699,8 +699,7 @@ export default function EverybodysInMyEarPage() {
         <div className="max-w-5xl w-full">
           {/* Floating Video Player */}
           <div 
-            className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 backdrop-blur-sm bg-black/20 cursor-pointer transform hover:scale-[1.01] transition-transform duration-300"
-            onClick={toggleVideo}
+            className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 backdrop-blur-sm bg-black/20 transform hover:scale-[1.01] transition-transform duration-300"
           >
             <video
               ref={videoRef}
@@ -714,10 +713,13 @@ export default function EverybodysInMyEarPage() {
               Your browser does not support the video tag.
             </video>
             
-            {/* Play/Pause Overlay */}
+            {/* Play/Pause Overlay - Only clickable when paused */}
             {!isVideoPlaying && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                <div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-2xl animate-pulse">
+              <div 
+                className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm cursor-pointer"
+                onClick={toggleVideo}
+              >
+                <div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-2xl animate-pulse pointer-events-none">
                   <svg className="w-10 h-10 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                   </svg>
