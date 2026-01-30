@@ -39,24 +39,68 @@ export default function EPsPage() {
         EPS
       </h1>
 
-      {/* EPs Grid */}
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl w-full">
+      {/* EPs Grid - Vinyl Style */}
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-5xl w-full">
         {siteContent.eps.map((ep) => (
           <button
             key={ep.id}
             onClick={() => setSelectedEP(ep)}
             className="group text-left"
           >
-            <div className="aspect-square rounded-2xl overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-xl relative">
-              <img
-                src={ep.coverImage || "/placeholder.svg"}
-                alt={`${ep.title} EP Cover`}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-end p-6">
-                <span className="text-white/70 text-sm mb-1">{ep.year}</span>
-                <h3 className="text-2xl font-bold text-white text-center">{ep.title}</h3>
+            {/* Vinyl Container */}
+            <div className="relative aspect-square">
+              {/* Vinyl Record - Behind the sleeve */}
+              <div className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-out group-hover:translate-x-12">
+                {/* Black vinyl disc */}
+                <div className="w-[90%] h-[90%] rounded-full bg-gradient-to-br from-zinc-900 via-black to-zinc-800 shadow-2xl flex items-center justify-center group-hover:animate-spin-slow">
+                  {/* Vinyl grooves */}
+                  <div className="absolute inset-4 rounded-full border border-zinc-700/30" />
+                  <div className="absolute inset-8 rounded-full border border-zinc-700/20" />
+                  <div className="absolute inset-12 rounded-full border border-zinc-700/30" />
+                  <div className="absolute inset-16 rounded-full border border-zinc-700/20" />
+                  <div className="absolute inset-20 rounded-full border border-zinc-700/30" />
+                  
+                  {/* Center label */}
+                  <div className="w-[35%] h-[35%] rounded-full overflow-hidden shadow-inner border-4 border-zinc-800">
+                    <img
+                      src={ep.coverImage || "/placeholder.svg"}
+                      alt={ep.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Center hole */}
+                  <div className="absolute w-3 h-3 rounded-full bg-zinc-900 border border-zinc-700" />
+                  
+                  {/* Shine effect */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/5 to-transparent" />
+                </div>
               </div>
+
+              {/* Album Sleeve - On top */}
+              <div className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl transition-all duration-300 group-hover:shadow-3xl z-10 bg-black">
+                <img
+                  src={ep.coverImage || "/placeholder.svg"}
+                  alt={`${ep.title} EP Cover`}
+                  className="w-full h-full object-cover"
+                />
+                
+                {/* Sleeve edge shadow */}
+                <div className="absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-black/30 to-transparent" />
+                
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
+                  <span className="text-white/70 text-sm mb-1">{ep.year}</span>
+                  <h3 className="text-xl font-bold text-white text-center px-4">{ep.title}</h3>
+                  <span className="text-white/50 text-xs mt-2">Click to listen</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Title below */}
+            <div className="mt-4 text-center">
+              <h3 className="text-lg font-semibold text-foreground">{ep.title}</h3>
+              <p className="text-sm text-muted-foreground">{ep.year}</p>
             </div>
           </button>
         ))}
