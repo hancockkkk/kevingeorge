@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { siteContent } from "@/content/siteContent";
-import { Instagram, Menu, X, Sun, Moon } from "lucide-react";
+import { Instagram, Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 
 const navItems = [
   { label: "EPS", href: "/eps" },
@@ -56,9 +56,20 @@ function YouTubeIcon({ className }: { className?: string }) {
   );
 }
 
+const dropdownNavItems = [
+  { label: "HOME", href: "/" },
+  { label: "EPS", href: "/eps" },
+  { label: "SINGLES", href: "/singles" },
+  { label: "NEWSLETTER", href: "/newsletter" },
+  { label: "MY DARLING'S A DEMON", href: "/my-darlings-a-demon" },
+  { label: "EVERYBODY'S IN MY EAR", href: "/everybodys-in-my-ear" },
+];
+
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
 
@@ -71,12 +82,58 @@ export function Header() {
     setMounted(true);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [isDropdownOpen]);
+
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
     <header className="w-full py-6 px-4 md:px-8 relative z-50">
+      {/* Dropdown Navigation Button - Top Left */}
+      <div className="absolute top-6 left-4 md:left-8">
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-foreground/5 hover:bg-foreground/10 transition-all border border-foreground/10"
+            aria-label="Navigation menu"
+          >
+            <Menu className="w-4 h-4 text-foreground/70" />
+            <ChevronDown className={`w-4 h-4 text-foreground/70 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* Dropdown Menu */}
+          {isDropdownOpen && (
+            <div className="absolute top-full left-0 mt-2 w-48 bg-background border border-foreground/10 rounded-lg shadow-lg overflow-hidden">
+              {dropdownNavItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsDropdownOpen(false)}
+                  className="block px-4 py-3 text-sm font-medium tracking-wide text-foreground hover:bg-foreground/5 transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Social Icons + Theme Toggle */}
       <div className="flex justify-center items-center gap-4 mb-6">
         <a
