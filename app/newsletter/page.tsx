@@ -33,11 +33,9 @@ export default function NewsletterPage() {
       <div className="max-w-3xl mx-auto px-4 py-16 md:py-24">
         <div className="text-center space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground">
-            Writings
+            KEVIN WRITES
           </h1>
           <p className="text-lg md:text-xl text-foreground/60 font-light max-w-2xl mx-auto leading-relaxed">
-            Long-form thoughts on music, life, the industry, and everything in between. 
-            <br className="hidden md:block" />
             An intimate look into my world.
           </p>
         </div>
