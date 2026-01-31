@@ -59,10 +59,10 @@ This document tracks all standalone singles (not part of EPs or Albums) with the
 | ANGEL NUMBERS | July 7, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 2 |
 | CASH IN THE CLUB | July 21, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 3 |
 | BIG MAN | August 4, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 4 |
-| SUPER ROMANTIC | August 18, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 5 |
-| THAT'S MY WOMAN | September 1, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 6 |
-| THE WAY IT GOES | September 15, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 7 |
-| IN WITH ME | September 29, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 8 |
+| SUPER ROMANTIC | August 18, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 5 |
+| THAT'S MY WOMAN | September 1, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 6 |
+| THE WAY IT GOES | September 15, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 7 |
+| IN WITH ME | September 29, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 8 |
 
 ## 2022 Singles (Chapter 03 & Other)
 
