@@ -55,10 +55,10 @@ This document tracks all standalone singles (not part of EPs or Albums) with the
 
 | Title | Release Date | Cover Image | Spotify | Apple Music | YouTube | Notes |
 |-------|-------------|-------------|---------|-------------|---------|-------|
-| SOME NIGHTS | June 24, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 1 |
-| ANGEL NUMBERS | July 7, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 2 |
-| CASH IN THE CLUB | July 21, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 3 |
-| BIG MAN | August 4, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 4 |
+| SOME NIGHTS | June 24, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 1 |
+| ANGEL NUMBERS | July 7, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 2 |
+| CASH IN THE CLUB | July 21, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 3 |
+| BIG MAN | August 4, 2022 | ✅ Has image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 4 |
 | SUPER ROMANTIC | August 18, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 5 |
 | THAT'S MY WOMAN | September 1, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 6 |
 | THE WAY IT GOES | September 15, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 02 Track 7 |
