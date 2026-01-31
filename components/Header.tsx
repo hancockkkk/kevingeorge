@@ -11,7 +11,7 @@ const navItems = [
   { label: "EPS", href: "/eps" },
   { label: "SINGLES", href: "/singles" },
   { label: "SHOP", href: "/shop" },
-  { label: "NEWSLETTER", href: "/newsletter" },
+  { label: "KEVIN WRITES", href: "/newsletter" },
   { label: "MY DARLING'S A DEMON", href: "/my-darlings-a-demon" },
   { label: "EVERYBODY'S IN MY EAR", href: "/everybodys-in-my-ear" },
 ];
@@ -60,7 +60,7 @@ const dropdownNavItems = [
   { label: "HOME", href: "/" },
   { label: "EPS", href: "/eps" },
   { label: "SINGLES", href: "/singles" },
-  { label: "NEWSLETTER", href: "/newsletter" },
+  { label: "KEVIN WRITES", href: "/newsletter" },
   { label: "MY DARLING'S A DEMON", href: "/my-darlings-a-demon" },
   { label: "EVERYBODY'S IN MY EAR", href: "/everybodys-in-my-ear" },
 ];
