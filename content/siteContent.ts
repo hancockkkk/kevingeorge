@@ -7,7 +7,7 @@ export const siteContent = {
     twitter: "https://x.com/itskevingeorge",
     tiktok: "https://tiktok.com/kevingeorgeyaps",
     spotify: "https://open.spotify.com/artist/kevingeorge",
-    appleMusic: "https://music.apple.com/artist/kevingeorge",
+    appleMusic: "https://music.apple.com/us/artist/kevin-george/1325859703",
     youtube: "https://youtube.com/@kevingeorge",
   },
   
