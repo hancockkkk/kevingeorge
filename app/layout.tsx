@@ -1,17 +1,14 @@
 import React from "react"
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-
 export const metadata: Metadata = {
-  title: "Kevin George | Official Website",
+  title: "KevinWrites",
   description:
-    "Enter the world of Kevin George. Stream music, shop merch, and stay connected.",
+    "Join KevinWrites for Kevin George updates on music, writing, merch, and shows.",
   generator: "v0.app",
   icons: {
     icon: [
@@ -39,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased min-h-screen`}>
+      <body className="font-sans antialiased min-h-screen">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

@@ -1,5 +1,43 @@
 import { siteContent } from "@/content/siteContent";
 
+const albumEmbedUrl =
+  "https://open.spotify.com/embed/album/1Z08UDoHKkFRdbgYV0CLSm?utm_source=generator&si=962ef30b8e944db8";
+
+const archiveVideos = [
+  {
+    title: "MY DARLINGS A DEMON DOCUMENTARY",
+    type: "Documentary",
+    url: "https://youtu.be/l3r1sCZ2Ulc",
+  },
+  {
+    title: "How I Made The Beat - I Better Find Your Love",
+    type: "Beat Breakdown",
+    url: "https://youtu.be/EmnjNDgTM84",
+  },
+  {
+    title: "MDAD 2019 Merch Campaign",
+    type: "Merch Film",
+    url: "https://youtu.be/Lk5TX7JU1fs",
+  },
+];
+
+const albumFacts = [
+  "Only official Kevin George album",
+  "Released through Island Records and Young Forever",
+  "Built as music, fashion, visuals, and story",
+  "The world around the album was bigger than what reached the public",
+];
+
+function getYouTubeEmbedUrl(url: string) {
+  const parsed = new URL(url);
+  const videoId =
+    parsed.hostname === "youtu.be"
+      ? parsed.pathname.replace("/", "")
+      : parsed.searchParams.get("v");
+
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+}
+
 function SpotifyIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -16,107 +54,177 @@ function AppleMusicIcon({ className }: { className?: string }) {
   );
 }
 
-function YouTubeIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-    </svg>
-  );
-}
-
 export default function MyDarlingsADemonPage() {
   const album = siteContent.myDarlingsADemon;
 
   return (
-    <div className="flex flex-col items-center px-4 pb-20">
-      {/* Hero Section */}
-      <section className="flex flex-col items-center mt-8 md:mt-12 max-w-4xl w-full">
-        <div
-          className="w-72 h-72 md:w-96 md:h-96 rounded-2xl flex items-center justify-center"
-          style={{ backgroundColor: album.color }}
-        >
-          <h2 className="text-2xl md:text-3xl font-bold text-white text-center px-6 leading-tight">
-            {album.title}
+    <div className="min-h-screen px-4 pb-24">
+      <section className="mx-auto grid w-full max-w-6xl gap-12 py-12 md:grid-cols-[0.9fr_1.1fr] md:py-20">
+        <div className="space-y-8">
+          <div className="space-y-5">
+            <p className="text-xs font-medium uppercase tracking-[0.3em] text-foreground/45">
+              2019 Debut Album
+            </p>
+            <h1 className="text-5xl font-black uppercase leading-none tracking-tight text-foreground md:text-7xl">
+              {album.title}
+            </h1>
+            <p className="max-w-2xl text-xl font-light leading-relaxed text-foreground/65">
+              The only official Kevin George album: a debut released through
+              Island Records and Young Forever, built to introduce the sound,
+              the style, and the world around the artist.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={album.spotifyLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-foreground px-5 text-sm font-semibold uppercase tracking-[0.16em] text-background transition-opacity hover:opacity-90"
+            >
+              <SpotifyIcon className="h-4 w-4" />
+              Spotify
+            </a>
+            <a
+              href={album.appleMusicLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-foreground/20 px-5 text-sm font-semibold uppercase tracking-[0.16em] text-foreground transition-colors hover:bg-foreground hover:text-background"
+            >
+              <AppleMusicIcon className="h-4 w-4" />
+              Apple
+            </a>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {albumFacts.map((fact) => (
+              <div
+                key={fact}
+                className="rounded-lg border border-foreground/10 bg-foreground/[0.03] p-4"
+              >
+                <p className="text-sm leading-relaxed text-foreground/65">
+                  {fact}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-5 rounded-lg border border-foreground/10 bg-foreground/[0.03] p-5">
+          <div className="flex items-center justify-between gap-4 border-b border-foreground/10 pb-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-foreground/45">
+                Official Album
+              </p>
+              <h2 className="mt-2 text-2xl font-bold text-foreground">
+                Stream MDAD
+              </h2>
+            </div>
+            <p className="text-sm text-foreground/45">{album.year}</p>
+          </div>
+          <div className="overflow-hidden rounded-lg border border-foreground/10 bg-black">
+            <iframe
+              src={albumEmbedUrl}
+              width="100%"
+              height="352"
+              frameBorder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              className="block rounded-lg"
+            ></iframe>
+          </div>
+          <h3 className="pt-2 text-xs font-semibold uppercase tracking-[0.22em] text-foreground/45">
+            Tracklist
+          </h3>
+          <div className="grid gap-2">
+            {album.tracklist.map((track) => (
+              <div
+                key={track.number}
+                className="grid grid-cols-[2rem_1fr] items-center gap-4 rounded-md px-2 py-2"
+              >
+                <span className="text-right text-sm text-foreground/35">
+                  {track.number.toString().padStart(2, "0")}
+                </span>
+                <span className="text-sm font-medium uppercase tracking-[0.08em] text-foreground">
+                  {track.title}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto grid w-full max-w-6xl gap-8 border-t border-foreground/10 py-12 md:grid-cols-[0.8fr_1.2fr]">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-[0.3em] text-foreground/45">
+            The World
+          </p>
+          <h2 className="mt-3 text-3xl font-bold text-foreground md:text-4xl">
+            The album came out. The full world was still forming.
+          </h2>
+        </div>
+        <div className="space-y-5 text-base leading-relaxed text-foreground/62">
+          <p>
+            MDAD was meant to be more than a collection of songs. The vision was
+            an album tied to clothing, imagery, campaign films, production
+            stories, and a visual language that could make the debut feel like
+            its own universe.
+          </p>
+          <p>
+            Some of that world reached people. Some of it stayed in folders,
+            mood boards, private edits, and archived footage. This page keeps
+            the official album at the center while bringing the lost rollout
+            pieces back into view.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-6xl border-t border-foreground/10 pt-12">
+        <div className="mb-8">
+          <p className="text-xs font-medium uppercase tracking-[0.3em] text-foreground/45">
+            Archive
+          </p>
+          <h2 className="mt-3 text-3xl font-bold text-foreground md:text-4xl">
+            Pieces from the MDAD rollout
           </h2>
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mt-8 text-center text-foreground">
-          {album.title}
-        </h1>
-        <p className="text-muted-foreground mt-2">{album.year}</p>
-
-        {/* Listen Buttons */}
-        <div className="flex gap-4 mt-8">
-          <a
-            href={album.spotifyLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-6 py-3 bg-[#1DB954] text-white rounded-full font-medium text-sm hover:opacity-90 transition-opacity"
-          >
-            <SpotifyIcon className="w-5 h-5" />
-            Spotify
-          </a>
-          <a
-            href={album.appleMusicLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-6 py-3 bg-foreground text-primary-foreground rounded-full font-medium text-sm hover:opacity-90 transition-opacity"
-          >
-            <AppleMusicIcon className="w-5 h-5" />
-            Apple
-          </a>
-          <a
-            href={album.youtubeLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-6 py-3 bg-[#FF0000] text-white rounded-full font-medium text-sm hover:opacity-90 transition-opacity"
-          >
-            <YouTubeIcon className="w-5 h-5" />
-            YouTube
-          </a>
-        </div>
-      </section>
-
-      {/* Description */}
-      <section className="mt-16 max-w-2xl w-full text-center">
-        <p className="text-lg text-muted-foreground leading-relaxed">
-          {album.description}
-        </p>
-      </section>
-
-      {/* Tracklist */}
-      <section className="mt-16 max-w-2xl w-full">
-        <h3 className="text-2xl font-bold text-foreground mb-6 text-center">
-          TRACKLIST
-        </h3>
-        <div className="space-y-3">
-          {album.tracklist.map((track) => (
-            <div
-              key={track.number}
-              className="flex items-center gap-4 py-3 px-4 rounded-lg hover:bg-secondary/50 transition-colors"
+        <div className="grid gap-6 md:grid-cols-2">
+          {archiveVideos.map((video) => (
+            <article
+              key={video.title}
+              className="overflow-hidden rounded-lg border border-foreground/10 bg-foreground/[0.03]"
             >
-              <span className="text-muted-foreground w-8 text-right">
-                {track.number.toString().padStart(2, "0")}
-              </span>
-              <span className="font-medium text-foreground">{track.title}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Press Quotes */}
-      <section className="mt-16 max-w-3xl w-full">
-        <h3 className="text-2xl font-bold text-foreground mb-8 text-center">
-          PRESS
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {album.pressQuotes.map((quote, index) => (
-            <div key={index} className="text-center">
-              <p className="text-foreground italic mb-2">{`"${quote.quote}"`}</p>
-              <p className="text-sm text-muted-foreground font-medium">
-                — {quote.source}
-              </p>
-            </div>
+              <div className="aspect-video bg-black">
+                <iframe
+                  src={getYouTubeEmbedUrl(video.url)}
+                  title={`${video.title} video`}
+                  width="100%"
+                  height="100%"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                ></iframe>
+              </div>
+              <div className="flex items-center justify-between gap-4 p-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/40">
+                    {video.type}
+                  </p>
+                  <h3 className="mt-1 text-lg font-semibold text-foreground">
+                    {video.title}
+                  </h3>
+                </div>
+                <a
+                  href={video.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-semibold uppercase tracking-[0.16em] text-foreground/55 transition-colors hover:text-foreground"
+                >
+                  YouTube
+                </a>
+              </div>
+            </article>
           ))}
         </div>
       </section>

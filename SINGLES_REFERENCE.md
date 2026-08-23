@@ -6,37 +6,57 @@ This document tracks all standalone singles (not part of EPs or Albums) with the
 
 | Title | Release Date | Cover Image | Spotify | Apple Music | YouTube | Notes |
 |-------|-------------|-------------|---------|-------------|---------|-------|
-| HALF AMAZING | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Confirmed release |
-| ALL FOR ME | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Confirmed release |
-| KISS N TELL | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2021 |
-| SEDATED | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
-| THE MOMENT | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
-| ALL MY DAYS | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2020 |
-| SAVE US | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2019 |
-| U NEVER NEEDED ME | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2018 |
-| LIFE'S A DREAM | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2020 |
-| GIVE ME A REASON | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2020 |
-| 20FEELLIKE | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2018 |
-| BY DESIGN | 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| KISS N TELL | December 12, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2021 |
+| SEDATED | December 5, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| ALL MY DAYS | September 19, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2020 |
+| SAVE US | September 5, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2019 |
+| U NEVER NEEDED ME | August 29, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2018 |
+| LIFE'S A DREAM | August 22, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2020 |
+| GIVE ME A REASON | August 15, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2020 |
+| GHOSTTOWN | August 8, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2020 |
+| ANYTHING GOES | August 1, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2018 |
+| 20FEELLIKE | July 25, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Lost Tapes 2018 |
+| BY DESIGN | May 23, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| ALL FOR ME | May 9, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Confirmed release |
+| HALF AMAZING | April 25, 2025 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Confirmed release |
 
 ## 2024 Singles
 
 | Title | Release Date | Cover Image | Spotify | Apple Music | YouTube | Notes |
 |-------|-------------|-------------|---------|-------------|---------|-------|
-| NEW YORK | 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
-| WISHED U WELL | 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
-| BAD GIRL | 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
-| CRAZY BOUT U | 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| NEW YORK | August 30, 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| WISHED U WELL | August 16, 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| BAD GIRL | August 9, 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| CRAZY BOUT U | August 2, 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| ROCK N ROLL | July 26, 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| GHOST | July 12, 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| WATCH ME BLEED | February 9, 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
 | FLOATING AWAY | January 19, 2024 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
 
 ## 2023 Singles
 
 | Title | Release Date | Cover Image | Spotify | Apple Music | YouTube | Notes |
 |-------|-------------|-------------|---------|-------------|---------|-------|
+| IT'S COLDER NOW, BUT IT IS WHAT IT IS | December 25, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
 | LEFT ME | December 15, 2023 | ❌ Need image | ❌ Need link | ✅ Has link | ❌ Need link | |
+| FLY LOW | September 29, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| SWAMP | September 15, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| GO AHEAD | September 8, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | ft Daniel Allan & Bkaye |
+| AM I TO BLAME | September 1, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| BREAKING THE BANK | August 18, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
 | DRIVE ME TO DRINK | August 4, 2023 | ❌ Need image | ❌ Need link | ✅ Has link | ❌ Need link | |
-| STAY AWAY | 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
-| STUNTIN' ON ME | 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| YOU'RE IN MY HEAD AGAIN | June 26, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| BABY WOULDN'T HAVE ME WAITING | June 16, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| WAY BACK | June 9, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| SECRETS SAFE | June 1, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| SLOW YOUR ROLL | May 25, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| JOHN DOE | May 18, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| OFF THE SHROOMS | May 4, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| WHAT U LIKE | February 10, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| BALL! | January 27, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Ft Daniel Allan |
+| SO LONG | January 19, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| HOLY MATRIMONY | January 5, 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
+| STAY AWAY | 2023 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | (No exact date) |
 
 ## 2022 Singles (Chapter 01: The Show Must Go On)
 
@@ -68,16 +88,15 @@ This document tracks all standalone singles (not part of EPs or Albums) with the
 
 | Title | Release Date | Cover Image | Spotify | Apple Music | YouTube | Notes |
 |-------|-------------|-------------|---------|-------------|---------|-------|
+| I LIKE THAT | December 22, 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
 | SOMETHING NEW | 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 03 |
-| LIES TO THE GRAVE | 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 03 |
-| WHAT'S THE PROBLEM? | 2022 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | Chapter 03 |
 
 ## 2021 Singles
 
 | Title | Release Date | Cover Image | Spotify | Apple Music | YouTube | Notes |
 |-------|-------------|-------------|---------|-------------|---------|-------|
-| WORLD ON FIRE | 2021 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | |
-| WARNING SIGNS | 2021 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | feat. Kevin George |
+| WORLD ON FIRE | 2021 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | feat. Johan Lenox |
+| WARNING SIGNS | 2021 | ❌ Need image | ❌ Need link | ❌ Need link | ❌ Need link | feat. Whetan |
 
 ---
 
