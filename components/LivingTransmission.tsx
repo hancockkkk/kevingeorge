@@ -14,8 +14,8 @@ import {
 type SignupStatus = "idle" | "submitting" | "success" | "error";
 
 const transmission = {
-  title: "All in My Head",
-  audio: "/audio/all-in-my-head-transmission.mp3",
+  title: "Apologies",
+  audio: "/audio/apologies.mp3",
 };
 
 function formatTime(value: number) {
@@ -101,7 +101,11 @@ export function LivingTransmission() {
               type="button"
               onClick={togglePlayback}
               className="flex size-16 shrink-0 items-center justify-center rounded-full border border-foreground bg-foreground text-background transition-transform hover:scale-105"
-              aria-label={isPlaying ? "Pause All in My Head" : "Play All in My Head"}
+              aria-label={
+                isPlaying
+                  ? `Pause ${transmission.title}`
+                  : `Play ${transmission.title}`
+              }
               title={isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? (
