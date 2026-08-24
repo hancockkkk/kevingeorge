@@ -5,7 +5,7 @@ export const siteContent = {
   socialLinks: {
     instagram: "https://www.instagram.com/itskevingeorge/",
     twitter: "https://x.com/itskevingeorge",
-    tiktok: "https://tiktok.com/kevingeorgeyaps",
+    tiktok: "https://www.tiktok.com/@kevingeorgespam",
     spotify:
       "https://open.spotify.com/artist/0UFKnbRkop5zKvIHhbnMCI?si=Sc4ymkq7SsamC74NOhPISA",
     appleMusic: "https://music.apple.com/us/artist/kevin-george/1325859703",

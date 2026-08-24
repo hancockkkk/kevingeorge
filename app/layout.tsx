@@ -7,8 +7,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Kevin George",
-  description:
-    "Join Kevin George for updates on music, merch, shows, and related news.",
+  description: "The official website of Kevin George.",
   generator: "v0.app",
   icons: {
     icon: [
