@@ -49,10 +49,10 @@ export default function HomePage() {
       <section className="mx-auto flex min-h-[calc(100vh-150px)] w-full max-w-[820px] flex-col justify-center py-12 md:py-20">
         <div className="space-y-8 md:space-y-10">
           <div className="space-y-5">
-            <h1 className="text-[3.1rem] font-black uppercase leading-[0.95] tracking-[0.01em] sm:text-7xl md:text-8xl">
+            <h1 className="text-[2.65rem] font-black uppercase leading-none tracking-[0.01em] sm:text-5xl md:text-6xl">
               Kevin George
             </h1>
-            <p className="max-w-[600px] text-2xl font-black leading-snug sm:text-3xl">
+            <p className="max-w-[600px] text-xl font-black leading-snug sm:text-2xl">
               Be first to know when Kevin George drops music, merch, and live
               moments
             </p>
@@ -60,7 +60,7 @@ export default function HomePage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <label className="block space-y-3">
-              <span className="text-3xl font-normal tracking-[0.04em]">
+              <span className="text-2xl font-normal tracking-[0.04em]">
                 Phone Number:
               </span>
               <div className="flex h-16 items-center rounded-lg border-2 border-foreground/45 bg-background px-5">
@@ -75,13 +75,13 @@ export default function HomePage() {
                   placeholder="201-555-0123"
                   autoComplete="tel-national"
                   required
-                  className="h-full min-w-0 flex-1 bg-transparent text-2xl tracking-[0.08em] text-foreground outline-none placeholder:text-foreground/28"
+                  className="h-full min-w-0 flex-1 bg-transparent text-xl tracking-[0.08em] text-foreground outline-none placeholder:text-foreground/28"
                 />
               </div>
             </label>
 
             <label className="block space-y-3">
-              <span className="text-3xl font-normal tracking-[0.04em]">
+              <span className="text-2xl font-normal tracking-[0.04em]">
                 E-Mail:
               </span>
               <input
@@ -90,11 +90,11 @@ export default function HomePage() {
                 onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
                 required
-                className="h-16 w-full rounded-lg border-2 border-foreground/45 bg-background px-5 text-2xl tracking-[0.04em] text-foreground outline-none placeholder:text-foreground/28"
+                className="h-16 w-full rounded-lg border-2 border-foreground/45 bg-background px-5 text-xl tracking-[0.04em] text-foreground outline-none placeholder:text-foreground/28"
               />
             </label>
 
-            <p className="text-xl leading-relaxed tracking-[0.04em] text-foreground/80">
+            <p className="text-base leading-relaxed tracking-[0.04em] text-foreground/80 sm:text-lg">
               By joining Kevin George, I agree to receive email and text updates
               from Kevin George about releases, merch, shows, and related news.
               Message frequency may vary. Message and data rates may apply.
@@ -103,7 +103,7 @@ export default function HomePage() {
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="flex h-16 w-full items-center justify-center rounded-lg bg-foreground px-6 text-2xl font-normal uppercase tracking-[0.08em] text-background transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="flex h-16 w-full items-center justify-center rounded-lg bg-foreground px-6 text-xl font-normal uppercase tracking-[0.08em] text-background transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               {status === "submitting" ? "Joining..." : "Join Kevin George"}
             </button>
