@@ -34,7 +34,6 @@ export function LivingTransmission() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(161);
-  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<SignupStatus>("idle");
   const [message, setMessage] = useState("");
@@ -67,7 +66,7 @@ export function LivingTransmission() {
       const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, email }),
+        body: JSON.stringify({ email }),
       });
       const result = await response.json();
 
@@ -77,7 +76,6 @@ export function LivingTransmission() {
 
       setStatus("success");
       setMessage(result.message);
-      setPhone("");
       setEmail("");
     } catch (error) {
       setStatus("error");
@@ -164,27 +162,7 @@ export function LivingTransmission() {
                 onSubmit={handleSubmit}
                 className="flex flex-1 flex-col px-6 py-8 sm:px-8"
               >
-                <div className="space-y-7">
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium uppercase">
-                      Phone Number
-                    </span>
-                    <div className="flex h-14 items-center border border-foreground/35 bg-transparent px-4 focus-within:border-foreground">
-                      <span className="mr-3 border-r border-foreground/20 pr-3 text-sm">
-                        US +1
-                      </span>
-                      <input
-                        type="tel"
-                        value={phone}
-                        onChange={(event) => setPhone(event.target.value)}
-                        placeholder="201-555-0123"
-                        autoComplete="tel-national"
-                        required
-                        className="h-full min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-foreground/35"
-                      />
-                    </div>
-                  </label>
-
+                <div>
                   <label className="block">
                     <span className="mb-2 block text-sm font-medium uppercase">
                       Email
@@ -201,9 +179,9 @@ export function LivingTransmission() {
                 </div>
 
                 <p className="mt-7 text-xs leading-relaxed text-foreground/55">
-                  By joining, I agree to receive email and text updates from
-                  Kevin George about releases, merch, shows, and related news.
-                  Message frequency may vary. Message and data rates may apply.
+                  By joining, I agree to receive email updates from Kevin
+                  George about releases, merch, shows, and related news. I can
+                  unsubscribe at any time.
                 </p>
 
                 <button

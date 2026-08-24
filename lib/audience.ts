@@ -1,68 +1,130 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
-
 export type Subscriber = {
   email: string;
-  phone: string;
-  createdAt: string;
-  updatedAt: string;
+  status: "active" | "unsubscribed" | "bounced" | "complained";
+  created_at: string;
+  updated_at: string;
 };
 
-const dataDirectory = path.join(process.cwd(), "data");
-const subscribersPath = path.join(dataDirectory, "subscribers.json");
-
 export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const consentVersion = "2026-08-24";
 
 export function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
 }
 
-export function normalizeUsPhone(phone: string) {
-  const digits = phone.replace(/\D/g, "");
-  const withoutCountryCode =
-    digits.length === 11 && digits.startsWith("1") ? digits.slice(1) : digits;
+function getSupabaseConfig() {
+  const url = process.env.SUPABASE_URL?.replace(/\/$/, "");
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (withoutCountryCode.length !== 10) {
-    return "";
+  if (!url || !serviceRoleKey) {
+    throw new Error("The subscriber list is not configured yet.");
   }
 
-  return `+1${withoutCountryCode}`;
+  return { url, serviceRoleKey };
 }
 
 export async function getSubscribers() {
-  try {
-    const subscribers = JSON.parse(await readFile(subscribersPath, "utf8"));
-    return Array.isArray(subscribers) ? (subscribers as Subscriber[]) : [];
-  } catch {
-    return [];
+  const { url, serviceRoleKey } = getSupabaseConfig();
+  const response = await fetch(
+    `${url}/rest/v1/subscribers?select=email,status,created_at,updated_at&status=eq.active&order=created_at.asc`,
+    {
+      headers: {
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+      },
+      cache: "no-store",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Could not read the subscriber list.");
   }
+
+  return (await response.json()) as Subscriber[];
 }
 
-export async function saveSubscriber(email: string, phone: string) {
-  await mkdir(dataDirectory, { recursive: true });
-
-  const subscribers = await getSubscribers();
+export async function saveSubscriber(email: string) {
+  const { url, serviceRoleKey } = getSupabaseConfig();
   const now = new Date().toISOString();
-  const existing = subscribers.find(
-    (subscriber) => subscriber.email === email || subscriber.phone === phone,
-  );
-  const withoutDuplicate = subscribers.filter(
-    (subscriber) => subscriber.email !== email && subscriber.phone !== phone,
+  const response = await fetch(
+    `${url}/rest/v1/subscribers?on_conflict=email`,
+    {
+      method: "POST",
+      headers: {
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+        "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates,return=representation",
+      },
+      body: JSON.stringify({
+        email,
+        email_consent: true,
+        consent_version: consentVersion,
+        consented_at: now,
+        source: "website",
+        status: "active",
+        updated_at: now,
+      }),
+    },
   );
 
-  const subscriber: Subscriber = {
-    email,
-    phone,
-    createdAt: existing?.createdAt || now,
-    updatedAt: now,
+  if (!response.ok) {
+    throw new Error("Could not save your email. Please try again.");
+  }
+
+  const subscribers = (await response.json()) as Subscriber[];
+  return subscribers[0];
+}
+
+export async function syncResendContact(email: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const segmentId = process.env.RESEND_SEGMENT_ID;
+
+  if (!apiKey || !segmentId) {
+    return { synced: false, skipped: true };
+  }
+
+  const headers = {
+    Authorization: `Bearer ${apiKey}`,
+    "Content-Type": "application/json",
   };
+  const createResponse = await fetch("https://api.resend.com/contacts", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      email,
+      unsubscribed: false,
+    }),
+  });
 
-  await writeFile(
-    subscribersPath,
-    JSON.stringify([...withoutDuplicate, subscriber], null, 2),
+  if (!createResponse.ok) {
+    const updateResponse = await fetch(
+      `https://api.resend.com/contacts/${encodeURIComponent(email)}`,
+      {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ unsubscribed: false }),
+      },
+    );
+
+    if (!updateResponse.ok) {
+      throw new Error("Could not sync the subscriber with the email list.");
+    }
+  }
+
+  const segmentResponse = await fetch(
+    `https://api.resend.com/contacts/${encodeURIComponent(email)}/segments/${segmentId}`,
+    {
+      method: "POST",
+      headers,
+    },
   );
 
-  return subscriber;
+  if (!segmentResponse.ok && segmentResponse.status !== 409) {
+    throw new Error("Could not add the subscriber to the email segment.");
+  }
+
+  return { synced: true, skipped: false };
 }
 
 export async function sendEmail({
@@ -100,38 +162,6 @@ export async function sendEmail({
 
   if (!response.ok) {
     throw new Error(`Email failed for ${to}.`);
-  }
-
-  return { sent: true, skipped: false };
-}
-
-export async function sendSms({ to, body }: { to: string; body: string }) {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const fromNumber = process.env.TWILIO_FROM_NUMBER;
-
-  if (!accountSid || !authToken || !fromNumber) {
-    return { sent: false, skipped: true };
-  }
-
-  const response = await fetch(
-    `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${accountSid}:${authToken}`).toString("base64")}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        From: fromNumber,
-        To: to,
-        Body: body,
-      }),
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`SMS failed for ${to}.`);
   }
 
   return { sent: true, skipped: false };

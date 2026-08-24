@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import {
   emailPattern,
   normalizeEmail,
-  normalizeUsPhone,
   saveSubscriber,
+  syncResendContact,
 } from "@/lib/audience";
 
 export async function POST(request: Request) {
@@ -12,17 +12,6 @@ export async function POST(request: Request) {
     const email = normalizeEmail(
       typeof body?.email === "string" ? body.email : "",
     );
-    const phone = normalizeUsPhone(
-      typeof body?.phone === "string" ? body.phone : "",
-    );
-
-    if (!phone) {
-      return NextResponse.json(
-        { error: "Enter a valid US phone number." },
-        { status: 400 },
-      );
-    }
-
     if (!emailPattern.test(email)) {
       return NextResponse.json(
         { error: "Enter a valid email address." },
@@ -30,7 +19,13 @@ export async function POST(request: Request) {
       );
     }
 
-    await saveSubscriber(email, phone);
+    await saveSubscriber(email);
+
+    try {
+      await syncResendContact(email);
+    } catch (error) {
+      console.error("Resend contact sync failed.", error);
+    }
 
     return NextResponse.json({
       message:

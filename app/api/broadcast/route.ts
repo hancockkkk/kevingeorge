@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSubscribers, sendEmail, sendSms } from "@/lib/audience";
+import { getSubscribers, sendEmail } from "@/lib/audience";
 
 export async function POST(request: Request) {
   const expectedToken = process.env.ADMIN_BROADCAST_TOKEN;
@@ -26,9 +26,7 @@ export async function POST(request: Request) {
 
     const subscribers = await getSubscribers();
     let emailsSent = 0;
-    let textsSent = 0;
     let emailsSkipped = 0;
-    let textsSkipped = 0;
 
     const textBody = [message, link].filter(Boolean).join("\n");
     const html = `
@@ -46,23 +44,14 @@ export async function POST(request: Request) {
         html,
         text: textBody,
       });
-      const smsResult = await sendSms({
-        to: subscriber.phone,
-        body: textBody,
-      });
-
       emailsSent += emailResult.sent ? 1 : 0;
-      textsSent += smsResult.sent ? 1 : 0;
       emailsSkipped += emailResult.skipped ? 1 : 0;
-      textsSkipped += smsResult.skipped ? 1 : 0;
     }
 
     return NextResponse.json({
       subscribers: subscribers.length,
       emailsSent,
-      textsSent,
       emailsSkipped,
-      textsSkipped,
     });
   } catch (error) {
     return NextResponse.json(
