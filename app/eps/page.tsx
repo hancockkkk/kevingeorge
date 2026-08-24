@@ -36,10 +36,9 @@ export default function EPsPage() {
   return (
     <div className="flex flex-col items-center px-4 pb-20">
       <h1 className="text-4xl md:text-5xl font-bold tracking-tight mt-8 text-center text-foreground">
-        EPS
+        MUSIC
       </h1>
 
-      {/* EPs Grid - Vinyl Style */}
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-5xl w-full">
         {siteContent.eps.map((ep) => (
           <button
@@ -81,7 +80,7 @@ export default function EPsPage() {
               <div className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl transition-all duration-300 group-hover:shadow-3xl z-10 bg-black">
                 <img
                   src={ep.coverImage || "/placeholder.svg"}
-                  alt={`${ep.title} EP Cover`}
+                  alt={`${ep.title} cover`}
                   className="w-full h-full object-cover"
                 />
                 
@@ -106,7 +105,7 @@ export default function EPsPage() {
         ))}
       </div>
 
-      {/* EP Detail Modal */}
+      {/* Music Detail Modal */}
       {selectedEP && (
         <div className="fixed inset-0 bg-foreground/80 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-background rounded-2xl max-w-md w-full p-6 relative animate-in fade-in zoom-in duration-200 my-8 max-h-[90vh] overflow-y-auto">
@@ -121,7 +120,7 @@ export default function EPsPage() {
             <div className="w-48 h-48 mx-auto rounded-xl overflow-hidden mb-4">
               <img
                 src={selectedEP.coverImage || "/placeholder.svg"}
-                alt={`${selectedEP.title} EP Cover`}
+                alt={`${selectedEP.title} cover`}
                 className="w-full h-full object-cover"
               />
             </div>

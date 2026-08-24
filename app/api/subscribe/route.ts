@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       message:
-        "You are in. KevinWrites will send the next move straight to you.",
+        "You are in. Kevin George will send the next move straight to you.",
     });
   } catch (error) {
     return NextResponse.json(

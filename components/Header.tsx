@@ -8,11 +8,10 @@ import { siteContent } from "@/content/siteContent";
 import { Instagram, Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 
 const navItems = [
-  { label: "KEVINWRITES", href: "/" },
-  { label: "EPS", href: "/eps" },
-  { label: "GLORY ROAD", href: "/glory-road" },
+  { label: "HOME", href: "/" },
+  { label: "MUSIC", href: "/music" },
+  { label: "VIDEOS", href: "/videos" },
   { label: "SHOP", href: "/shop" },
-  { label: "MY DARLING'S A DEMON", href: "/my-darlings-a-demon" },
 ];
 
 function TwitterIcon({ className }: { className?: string }) {
@@ -56,10 +55,10 @@ function YouTubeIcon({ className }: { className?: string }) {
 }
 
 const dropdownNavItems = [
-  { label: "KEVINWRITES", href: "/" },
-  { label: "EPS", href: "/eps" },
-  { label: "GLORY ROAD", href: "/glory-road" },
-  { label: "MY DARLING'S A DEMON", href: "/my-darlings-a-demon" },
+  { label: "HOME", href: "/" },
+  { label: "MUSIC", href: "/music" },
+  { label: "VIDEOS", href: "/videos" },
+  { label: "SHOP", href: "/shop" },
 ];
 
 export function Header() {
@@ -71,7 +70,7 @@ export function Header() {
   const pathname = usePathname();
 
   // Pages that have their own custom design - don't show theme toggle
-  const customPages = ["/my-darlings-a-demon"];
+  const customPages: string[] = [];
   const isCustomPage = customPages.includes(pathname);
 
   // Prevent hydration mismatch

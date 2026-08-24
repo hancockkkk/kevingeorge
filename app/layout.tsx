@@ -6,9 +6,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KevinWrites",
+  title: "Kevin George",
   description:
-    "Join KevinWrites for Kevin George updates on music, writing, merch, and shows.",
+    "Join Kevin George for updates on music, merch, shows, and related news.",
   generator: "v0.app",
   icons: {
     icon: [

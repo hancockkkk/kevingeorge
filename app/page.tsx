@@ -50,10 +50,10 @@ export default function HomePage() {
         <div className="space-y-8 md:space-y-10">
           <div className="space-y-5">
             <h1 className="text-[3.1rem] font-black uppercase leading-[0.95] tracking-[0.01em] sm:text-7xl md:text-8xl">
-              KevinWrites
+              Kevin George
             </h1>
             <p className="max-w-[600px] text-2xl font-black leading-snug sm:text-3xl">
-              Be first to know when Kevin drops music, merch, writing, and live
+              Be first to know when Kevin George drops music, merch, and live
               moments
             </p>
           </div>
@@ -95,7 +95,7 @@ export default function HomePage() {
             </label>
 
             <p className="text-xl leading-relaxed tracking-[0.04em] text-foreground/80">
-              By joining KevinWrites, I agree to receive email and text updates
+              By joining Kevin George, I agree to receive email and text updates
               from Kevin George about releases, merch, shows, and related news.
               Message frequency may vary. Message and data rates may apply.
             </p>
@@ -105,7 +105,7 @@ export default function HomePage() {
               disabled={status === "submitting"}
               className="flex h-16 w-full items-center justify-center rounded-lg bg-foreground px-6 text-2xl font-normal uppercase tracking-[0.08em] text-background transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {status === "submitting" ? "Joining..." : "Join KevinWrites"}
+              {status === "submitting" ? "Joining..." : "Join Kevin George"}
             </button>
 
             {message && (

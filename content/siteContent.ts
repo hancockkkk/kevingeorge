@@ -21,6 +21,31 @@ export const siteContent = {
   
   eps: [
     {
+      id: "album-my-darlings-a-demon",
+      title: "MY DARLING'S A DEMON",
+      year: "2019",
+      color: "#8B0000",
+      coverImage: "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e02834c801d5016927635ac80b1",
+      tracklist: [
+        "Wait",
+        "All of Me",
+        "Wish You Were Here",
+        "I Better Find Your Love",
+        "Don't Sleep Without Me",
+        "Lay It On Me",
+        "Switch Up",
+        "Sweet Darling",
+        "Off the Wall",
+        "Reeses",
+        "Why Would I Love Again",
+        "Last Night I Lost Reason",
+        "You Won't Get Me Back",
+        "I'm Not The Best For You",
+      ],
+      spotifyLink: "https://open.spotify.com/album/1Z08UDoHKkFRdbgYV0CLSm?si=S50KA5UqQV69LcJPhuwudw",
+      appleMusicLink: "https://music.apple.com/us/artist/kevin-george/1325859703",
+    },
+    {
       id: "ep-1",
       title: "LOVELAND",
       year: "2018",

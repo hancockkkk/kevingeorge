@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111;">
         <p>${message.replace(/\n/g, "<br />")}</p>
         ${link ? `<p><a href="${link}">${link}</a></p>` : ""}
-        <p style="font-size:12px;color:#666;">You are receiving this because you joined KevinWrites.</p>
+        <p style="font-size:12px;color:#666;">You are receiving this because you joined Kevin George.</p>
       </div>
     `;
 
