@@ -76,6 +76,34 @@ export async function saveSubscriber(email: string) {
   return subscribers[0];
 }
 
+export async function updateSubscriberStatus(
+  email: string,
+  status: Subscriber["status"],
+) {
+  const { url, serviceRoleKey } = getSupabaseConfig();
+  const response = await fetch(
+    `${url}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        email_consent: status === "active",
+        status,
+        updated_at: new Date().toISOString(),
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Could not update the subscriber status.");
+  }
+}
+
 export async function syncResendContact(email: string) {
   const apiKey = process.env.RESEND_API_KEY;
   const segmentId = process.env.RESEND_SEGMENT_ID;

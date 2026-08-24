@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import Link from "next/link";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { Check, Pause, Play, Plus } from "lucide-react";
 import {
   Sheet,
@@ -17,6 +18,8 @@ const transmission = {
   title: "Apologies",
   audio: "/audio/apologies.mp3",
 };
+const previewDuration = 30;
+const unlockStorageKey = "kevin-george-apologies-unlocked";
 
 function formatTime(value: number) {
   if (!Number.isFinite(value)) return "0:00";
@@ -34,15 +37,43 @@ export function LivingTransmission() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(161);
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<SignupStatus>("idle");
   const [message, setMessage] = useState("");
+  const playableDuration = isUnlocked ? duration : previewDuration;
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const unlockedFromEmail = url.searchParams.get("unlock") === "apologies";
+    const unlockedBefore =
+      window.localStorage.getItem(unlockStorageKey) === "true";
+
+    if (unlockedFromEmail || unlockedBefore) {
+      window.localStorage.setItem(unlockStorageKey, "true");
+      setIsUnlocked(true);
+    }
+
+    if (unlockedFromEmail) {
+      url.searchParams.delete("unlock");
+      window.history.replaceState(
+        {},
+        "",
+        `${url.pathname}${url.search}${url.hash}`,
+      );
+    }
+  }, []);
 
   async function togglePlayback() {
     const audio = audioRef.current;
     if (!audio) return;
 
     if (audio.paused) {
+      if (!isUnlocked && audio.currentTime >= previewDuration) {
+        audio.currentTime = 0;
+        setCurrentTime(0);
+      }
       await audio.play();
     } else {
       audio.pause();
@@ -53,8 +84,9 @@ export function LivingTransmission() {
     const audio = audioRef.current;
     if (!audio) return;
 
-    audio.currentTime = value;
-    setCurrentTime(value);
+    const nextTime = Math.min(value, playableDuration);
+    audio.currentTime = nextTime;
+    setCurrentTime(nextTime);
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -77,6 +109,9 @@ export function LivingTransmission() {
       setStatus("success");
       setMessage(result.message);
       setEmail("");
+      setIsUnlocked(true);
+      window.localStorage.setItem(unlockStorageKey, "true");
+      window.setTimeout(() => setIsSignupOpen(false), 700);
     } catch (error) {
       setStatus("error");
       setMessage(
@@ -117,13 +152,14 @@ export function LivingTransmission() {
               <div className="mb-2 flex items-center justify-between gap-4 text-xs font-medium tabular-nums sm:text-sm">
                 <span>{isPlaying ? "On Air" : "Ready"}</span>
                 <span>
-                  {formatTime(currentTime)} / {formatTime(duration)}
+                  {formatTime(Math.min(currentTime, playableDuration))} /{" "}
+                  {formatTime(playableDuration)}
                 </span>
               </div>
               <input
                 type="range"
                 min="0"
-                max={duration || 0}
+                max={playableDuration || 0}
                 step="0.1"
                 value={currentTime}
                 onChange={(event) => handleSeek(Number(event.target.value))}
@@ -134,19 +170,19 @@ export function LivingTransmission() {
           </div>
         </div>
 
-        <Sheet>
-            <SheetTrigger asChild>
-              <button
-                type="button"
-                className="group absolute bottom-6 left-5 right-5 flex h-12 items-center justify-between border border-foreground/50 bg-background px-4 text-sm font-semibold uppercase transition-colors hover:bg-foreground hover:text-background sm:bottom-8 sm:left-auto sm:right-8 sm:w-56 lg:bottom-10 lg:right-12"
-              >
-                Stay Connected
-                <Plus className="size-4 transition-transform group-hover:rotate-90" />
-              </button>
-            </SheetTrigger>
+        <Sheet open={isSignupOpen} onOpenChange={setIsSignupOpen}>
+          <SheetTrigger asChild>
+            <button
+              type="button"
+              className="group absolute bottom-6 left-5 right-5 flex h-12 items-center justify-between border border-foreground/50 bg-background px-4 text-sm font-semibold uppercase transition-colors hover:bg-foreground hover:text-background sm:bottom-8 sm:left-auto sm:right-8 sm:w-56 lg:bottom-10 lg:right-12"
+            >
+              Stay Connected
+              <Plus className="size-4 transition-transform group-hover:rotate-90" />
+            </button>
+          </SheetTrigger>
 
-            <SheetContent className="w-full max-w-none gap-0 border-foreground/20 p-0 sm:max-w-[440px]">
-              <SheetHeader className="border-b border-foreground/15 px-6 py-8 pr-14 text-left sm:px-8 sm:py-10">
+          <SheetContent className="w-full max-w-none gap-0 border-foreground/20 p-0 sm:max-w-[440px]">
+            <SheetHeader className="border-b border-foreground/15 px-6 py-8 pr-14 text-left sm:px-8 sm:py-10">
                 <p className="text-xs font-medium uppercase">
                   Direct from Kevin
                 </p>
@@ -154,7 +190,8 @@ export function LivingTransmission() {
                   Stay Connected
                 </SheetTitle>
                 <SheetDescription className="pt-3 text-base leading-relaxed text-foreground/65">
-                  Music, releases, shows, and whatever comes next.
+                  Unlock the full song and hear about releases, shows, and
+                  whatever comes next.
                 </SheetDescription>
               </SheetHeader>
 
@@ -181,7 +218,18 @@ export function LivingTransmission() {
                 <p className="mt-7 text-xs leading-relaxed text-foreground/55">
                   By joining, I agree to receive email updates from Kevin
                   George about releases, merch, shows, and related news. I can
-                  unsubscribe at any time.
+                  unsubscribe at any time. See the{" "}
+                  <Link
+                    href="/privacy"
+                    className="underline underline-offset-2"
+                  >
+                    Privacy Policy
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/terms" className="underline underline-offset-2">
+                    Terms
+                  </Link>
+                  .
                 </p>
 
                 <button
@@ -208,7 +256,7 @@ export function LivingTransmission() {
                   </div>
                 )}
               </form>
-            </SheetContent>
+          </SheetContent>
         </Sheet>
       </div>
 
@@ -222,7 +270,19 @@ export function LivingTransmission() {
           setIsPlaying(false);
           setCurrentTime(0);
         }}
-        onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
+        onTimeUpdate={(event) => {
+          const audio = event.currentTarget;
+
+          if (!isUnlocked && audio.currentTime >= previewDuration) {
+            audio.pause();
+            audio.currentTime = previewDuration;
+            setCurrentTime(previewDuration);
+            setIsSignupOpen(true);
+            return;
+          }
+
+          setCurrentTime(audio.currentTime);
+        }}
         onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
       />
     </section>

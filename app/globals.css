@@ -151,3 +151,25 @@
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
+
+@layer components {
+  .legal-copy {
+    @apply space-y-9 text-base leading-7 text-foreground/75;
+  }
+
+  .legal-copy section {
+    @apply space-y-3;
+  }
+
+  .legal-copy h2 {
+    @apply text-lg font-black uppercase text-foreground;
+  }
+
+  .legal-copy ul {
+    @apply list-disc space-y-2 pl-5;
+  }
+
+  .legal-copy a {
+    @apply font-semibold text-foreground underline underline-offset-4;
+  }
+}
