@@ -131,7 +131,7 @@ export function Header() {
       </div>
 
       {/* Social Icons + Theme Toggle */}
-      <div className="ml-[72px] flex items-center justify-start gap-2 mb-6 md:ml-0 md:justify-center md:gap-4">
+      <div className="max-[359px]:mt-12 flex items-center justify-center gap-1.5 mb-6 md:gap-4">
         <a
           href={siteContent.socialLinks.instagram}
           target="_blank"
