@@ -131,7 +131,7 @@ export function Header() {
       </div>
 
       {/* Social Icons + Theme Toggle */}
-      <div className="flex justify-center items-center gap-4 mb-6">
+      <div className="ml-[72px] flex items-center justify-start gap-2 mb-6 md:ml-0 md:justify-center md:gap-4">
         <a
           href={siteContent.socialLinks.instagram}
           target="_blank"
@@ -190,7 +190,7 @@ export function Header() {
         {/* Theme Toggle - Only show on non-custom pages */}
         {!isCustomPage && mounted && (
           <>
-            <div className="w-px h-5 bg-foreground/20 mx-2" />
+            <div className="w-px h-5 bg-foreground/20 md:mx-2" />
             <button
               onClick={toggleTheme}
               className="text-foreground hover:opacity-70 transition-all p-1.5 rounded-full hover:bg-foreground/10"
