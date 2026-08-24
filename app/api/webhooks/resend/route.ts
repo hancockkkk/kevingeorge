@@ -1,10 +1,47 @@
 import { NextResponse } from "next/server";
+import { createDecipheriv, createHash } from "node:crypto";
 import { Resend, type WebhookEventPayload } from "resend";
 import {
   normalizeEmail,
   updateSubscriberStatus,
   type Subscriber,
 } from "@/lib/audience";
+
+const encryptedProductionSecret =
+  "v1.iVQw3dUJtnStditH.-Si6RgFsk_mp2scofvs7JQ.0fuTa3tyn_dExrbESdy155VGdK2tmqaYEReDV7_LEiZD78D8kHw";
+
+function getWebhookSecret() {
+  if (process.env.RESEND_WEBHOOK_SECRET) {
+    return process.env.RESEND_WEBHOOK_SECRET;
+  }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  const [version, ivValue, tagValue, encryptedValue] =
+    encryptedProductionSecret.split(".");
+
+  if (!apiKey || version !== "v1" || !ivValue || !tagValue || !encryptedValue) {
+    return null;
+  }
+
+  try {
+    const key = createHash("sha256")
+      .update(`${apiKey}:kevin-george-webhook`)
+      .digest();
+    const decipher = createDecipheriv(
+      "aes-256-gcm",
+      key,
+      Buffer.from(ivValue, "base64url"),
+    );
+    decipher.setAuthTag(Buffer.from(tagValue, "base64url"));
+
+    return Buffer.concat([
+      decipher.update(Buffer.from(encryptedValue, "base64url")),
+      decipher.final(),
+    ]).toString("utf8");
+  } catch {
+    return null;
+  }
+}
 
 function getAffectedSubscribers(event: WebhookEventPayload) {
   const affected = new Map<string, Subscriber["status"]>();
@@ -32,7 +69,7 @@ function getAffectedSubscribers(event: WebhookEventPayload) {
 }
 
 export async function POST(request: Request) {
-  const webhookSecret = process.env.RESEND_WEBHOOK_SECRET;
+  const webhookSecret = getWebhookSecret();
 
   if (!webhookSecret) {
     return NextResponse.json(
@@ -78,4 +115,3 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ received: true });
 }
-
