@@ -4,6 +4,7 @@ import {
   normalizeEmail,
   saveSubscriber,
   syncResendContact,
+  triggerWelcomeAutomation,
 } from "@/lib/audience";
 
 export async function POST(request: Request) {
@@ -22,9 +23,12 @@ export async function POST(request: Request) {
     await saveSubscriber(email);
 
     try {
-      await syncResendContact(email);
+      const contact = await syncResendContact(email);
+      if (contact.created) {
+        await triggerWelcomeAutomation(email);
+      }
     } catch (error) {
-      console.error("Resend contact sync failed.", error);
+      console.error("Resend subscriber workflow failed.", error);
     }
 
     return NextResponse.json({

@@ -81,25 +81,37 @@ export async function syncResendContact(email: string) {
   const segmentId = process.env.RESEND_SEGMENT_ID;
 
   if (!apiKey || !segmentId) {
-    return { synced: false, skipped: true };
+    return { synced: false, skipped: true, created: false };
   }
 
   const headers = {
     Authorization: `Bearer ${apiKey}`,
     "Content-Type": "application/json",
   };
-  const createResponse = await fetch("https://api.resend.com/contacts", {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      email,
-      unsubscribed: false,
-    }),
+  const contactUrl = `https://api.resend.com/contacts/${encodeURIComponent(email)}`;
+  const existingResponse = await fetch(contactUrl, {
+    headers: { Authorization: `Bearer ${apiKey}` },
   });
+  let created = false;
 
-  if (!createResponse.ok) {
+  if (existingResponse.status === 404) {
+    const createResponse = await fetch("https://api.resend.com/contacts", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        email,
+        unsubscribed: false,
+      }),
+    });
+
+    if (!createResponse.ok) {
+      throw new Error("Could not sync the subscriber with the email list.");
+    }
+
+    created = true;
+  } else if (existingResponse.ok) {
     const updateResponse = await fetch(
-      `https://api.resend.com/contacts/${encodeURIComponent(email)}`,
+      contactUrl,
       {
         method: "PATCH",
         headers,
@@ -110,6 +122,8 @@ export async function syncResendContact(email: string) {
     if (!updateResponse.ok) {
       throw new Error("Could not sync the subscriber with the email list.");
     }
+  } else {
+    throw new Error("Could not check the email list for this subscriber.");
   }
 
   const segmentResponse = await fetch(
@@ -124,7 +138,37 @@ export async function syncResendContact(email: string) {
     throw new Error("Could not add the subscriber to the email segment.");
   }
 
-  return { synced: true, skipped: false };
+  return {
+    synced: true,
+    skipped: false,
+    created,
+  };
+}
+
+export async function triggerWelcomeAutomation(email: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+
+  if (!apiKey) {
+    return { triggered: false, skipped: true };
+  }
+
+  const response = await fetch("https://api.resend.com/events/send", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      event: "kevin_george.subscribed",
+      email,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Could not trigger the welcome email.");
+  }
+
+  return { triggered: true, skipped: false };
 }
 
 export async function sendEmail({
