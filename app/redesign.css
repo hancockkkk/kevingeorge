@@ -1,0 +1,102 @@
+:is(.redesign-page, .redesign-dialog),:is(.redesign-page, .redesign-dialog) { --background:#fff; --foreground:#181818; --card:#fff; --popover:#fff; --primary:#181818; --primary-foreground:#fff; --secondary:#f2f2f2; --muted:#dedede; --muted-foreground:#707070; --border:#d9d9d9; }
+:is(.redesign-page, .redesign-dialog), :is(.redesign-page, .redesign-dialog) *{box-sizing:border-box;border-color:var(--border)}
+html:has(.redesign-page){scroll-behavior:smooth;scroll-padding-top:32px}
+.redesign-page{margin:0;background:#fff;color:#181818;font:16px/1.5 Arial,Helvetica,sans-serif;padding-bottom:65px;min-height:100svh}
+:is(.redesign-page, .redesign-dialog) button,:is(.redesign-page, .redesign-dialog) input,:is(.redesign-page, .redesign-dialog) a{font:inherit}:is(.redesign-page, .redesign-dialog) button,:is(.redesign-page, .redesign-dialog) a{-webkit-tap-highlight-color:transparent}:is(.redesign-page, .redesign-dialog) button{cursor:pointer;color:inherit}:is(.redesign-page, .redesign-dialog) button:disabled{cursor:wait;opacity:.55}
+:is(.redesign-page, .redesign-dialog) button{padding:0;border:0;background:none}:is(.redesign-page, .redesign-dialog) a{color:inherit;text-decoration:none}:is(.redesign-page, .redesign-dialog) a:hover,:is(.redesign-page, .redesign-dialog) button:hover{color:#707070}
+:is(.redesign-page, .redesign-dialog) :focus-visible{outline:2px solid #181818;outline-offset:5px}:is(.redesign-page, .redesign-dialog) ::selection{background:#181818;color:white}
+:is(.redesign-page, .redesign-dialog) h1,:is(.redesign-page, .redesign-dialog) h2,:is(.redesign-page, .redesign-dialog) h3,:is(.redesign-page, .redesign-dialog) p{margin:0}:is(.redesign-page, .redesign-dialog) h1,:is(.redesign-page, .redesign-dialog) h2,:is(.redesign-page, .redesign-dialog) h3{font-weight:400}:is(.redesign-page, .redesign-dialog) img{display:block;max-width:100%}
+:is(.redesign-page, .redesign-dialog) .skip-link{position:fixed;left:20px;top:10px;z-index:100;background:white;padding:10px;transform:translateY(-200%)}:is(.redesign-page, .redesign-dialog) .skip-link:focus{transform:none}
+:is(.redesign-page, .redesign-dialog) .site-header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:30px;padding:33px 42px;font-size:14px;line-height:1.5}
+:is(.redesign-page, .redesign-dialog) .wordmark{justify-self:start;white-space:nowrap}:is(.redesign-page, .redesign-dialog) .site-header nav{display:flex;gap:34px}:is(.redesign-page, .redesign-dialog) .subscribe-link{justify-self:end;font-size:14px}
+:is(.redesign-page, .redesign-dialog) .page-shell{width:min(680px,calc(100% - 40px));margin:0 auto}
+:is(.redesign-page, .redesign-dialog) .first-listen{width:min(330px,100%);margin:42px auto 96px;text-align:center}
+:is(.redesign-page, .redesign-dialog) .first-listen h1{font-size:16px;margin:0 0 19px}
+:is(.redesign-page, .redesign-dialog) .inline-player{display:flex;align-items:center;gap:14px;width:100%}
+:is(.redesign-page, .redesign-dialog) .play-button,:is(.redesign-page, .redesign-dialog) .icon-button{flex-shrink:0;display:grid;place-items:center;width:28px;height:32px;background:none;border:0;color:#181818}
+:is(.redesign-page, .redesign-dialog) .time{font-size:12px;min-width:26px;color:#707070;font-variant-numeric:tabular-nums}
+:is(.redesign-page, .redesign-dialog) .song-slider{flex:1;min-width:50px;padding:16px 0}
+:is(.redesign-page, .redesign-dialog) .song-slider [data-slot=slider-track]{height:2px;border-radius:0;background:#ddd}
+:is(.redesign-page, .redesign-dialog) .song-slider [data-slot=slider-range]{background:#181818}
+:is(.redesign-page, .redesign-dialog) .song-slider [data-slot=slider-thumb]{width:6px;height:6px;border:0;background:#181818;border-radius:0;box-shadow:none}
+:is(.redesign-page, .redesign-dialog) .preview-note{font-size:12px;color:#707070;line-height:1.6;margin-top:13px}:is(.redesign-page, .redesign-dialog) .preview-note:hover{text-decoration:underline;text-underline-offset:3px}
+:is(.redesign-page, .redesign-dialog) .section-label{font-size:14px;line-height:1.5;font-weight:400}
+:is(.redesign-page, .redesign-dialog) .music-section{text-align:center}
+:is(.redesign-page, .redesign-dialog) .music-section>.section-label{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap}
+:is(.redesign-page, .redesign-dialog) .release-list{display:flex;flex-direction:column;align-items:center;gap:110px}
+:is(.redesign-page, .redesign-dialog) .release{width:min(420px,100%);text-align:center}
+:is(.redesign-page, .redesign-dialog) .cover-button{display:block;width:100%;padding:0;background:transparent}
+:is(.redesign-page, .redesign-dialog) .cover-button img{width:100%;height:auto;aspect-ratio:1;object-fit:contain}
+:is(.redesign-page, .redesign-dialog) .cover-button:hover{opacity:.9}
+:is(.redesign-page, .redesign-dialog) .release h3{font-size:14px;line-height:1.5;margin:23px 0 6px}
+:is(.redesign-page, .redesign-dialog) .release h3 button{max-width:100%}
+:is(.redesign-page, .redesign-dialog) .release-year{font-size:12px;color:#707070;line-height:1.5}
+:is(.redesign-page, .redesign-dialog) .release-links{display:flex;justify-content:center;gap:22px;margin-top:17px;font-size:14px}
+:is(.redesign-page, .redesign-dialog) .release-links a,:is(.redesign-page, .redesign-dialog) .release-links button{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+:is(.redesign-page, .redesign-dialog) .more-link{font-size:14px;text-decoration:underline;text-underline-offset:4px;margin-top:62px}
+:is(.redesign-page, .redesign-dialog) .videos-section{margin-top:140px;text-align:center}
+:is(.redesign-page, .redesign-dialog) .section-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:35px;font-size:14px}
+:is(.redesign-page, .redesign-dialog) .section-heading>a{color:#707070}
+:is(.redesign-page, .redesign-dialog) .video-list{display:flex;flex-direction:column;gap:70px}
+:is(.redesign-page, .redesign-dialog) .video-post{width:100%}
+:is(.redesign-page, .redesign-dialog) .video-button{display:block;width:100%}
+:is(.redesign-page, .redesign-dialog) .video-image{display:block;aspect-ratio:16/9;position:relative;background:#000;overflow:hidden}
+:is(.redesign-page, .redesign-dialog) .video-image>img{position:absolute;width:100%;height:100%;object-fit:cover}
+:is(.redesign-page, .redesign-dialog) .video-play{position:absolute;inset:0;display:grid;place-items:center;color:white;background:rgba(0,0,0,.12)}
+:is(.redesign-page, .redesign-dialog) .video-play>svg{filter:drop-shadow(0 1px 4px rgba(0,0,0,.45))}
+:is(.redesign-page, .redesign-dialog) .video-button:hover .video-play{background:rgba(0,0,0,.03)}
+:is(.redesign-page, .redesign-dialog) .video-post h3{font-size:14px;margin-top:19px}
+:is(.redesign-page, .redesign-dialog) .shop-section{text-align:center;padding:125px 0 0}
+:is(.redesign-page, .redesign-dialog) .shop-section>p{font-size:16px;color:#707070;margin-top:19px}
+:is(.redesign-page, .redesign-dialog) .connect-section{width:min(420px,100%);margin:120px auto 0;text-align:left}
+:is(.redesign-page, .redesign-dialog) .connect-section>.section-label{text-align:center}:is(.redesign-page, .redesign-dialog) .connect-section>p{text-align:center;font-size:16px;color:#707070;margin-top:17px;margin-bottom:34px}
+:is(.redesign-page, .redesign-dialog) .signup-form>label{font-size:14px;display:block;margin-bottom:10px}
+:is(.redesign-page, .redesign-dialog) .email-field{display:flex;gap:14px;border-bottom:1px solid #181818;padding-bottom:8px;align-items:center}
+:is(.redesign-page, .redesign-dialog) .signup-input[data-slot=input]{border:0;box-shadow:none;border-radius:0;font:16px Arial,Helvetica,sans-serif;padding:10px 0;background:transparent;height:42px;min-width:0}
+:is(.redesign-page, .redesign-dialog) .signup-input[data-slot=input]:focus-visible{outline:1px solid #181818;outline-offset:3px}
+:is(.redesign-page, .redesign-dialog) .email-field>button{font-size:14px;min-width:42px;min-height:42px;flex-shrink:0}
+:is(.redesign-page, .redesign-dialog) .consent{font-size:12px;line-height:1.6;color:#707070;margin-top:17px}
+:is(.redesign-page, .redesign-dialog) .consent a{text-decoration:underline;text-underline-offset:2px}
+:is(.redesign-page, .redesign-dialog) .form-error{font-size:14px;color:#a82020;margin-top:12px}
+:is(.redesign-page, .redesign-dialog) .signup-success{display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.6}:is(.redesign-page, .redesign-dialog) .signup-success>svg{flex-shrink:0}
+:is(.redesign-page, .redesign-dialog) .text-link{display:inline-flex;gap:10px;align-items:center;font-size:14px;text-decoration:underline;text-underline-offset:4px}:is(.redesign-page, .redesign-dialog) .connect-section>.text-link{margin-top:24px}
+:is(.redesign-page, .redesign-dialog) .site-footer{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:90px 42px 26px;font-size:12px;color:#707070}:is(.redesign-page, .redesign-dialog) .site-footer>div{display:flex;gap:26px}
+:is(.redesign-page, .redesign-dialog) .audio-dock{position:fixed;z-index:30;bottom:0;left:0;width:100%;background:#fff;border-top:1px solid #ededed;padding:10px 42px;display:grid;grid-template-columns:1fr minmax(250px,460px) 1fr;align-items:center;gap:24px;font-size:12px}
+:is(.redesign-page, .redesign-dialog) .dock-track{font-size:12px}:is(.redesign-page, .redesign-dialog) .dock-controls{display:flex;align-items:center;gap:14px}:is(.redesign-page, .redesign-dialog) .dock-unlock{justify-self:end;font-size:12px;color:#707070}
+.album-dialog[data-slot=dialog-content],.video-dialog[data-slot=dialog-content],.signup-dialog[data-slot=dialog-content]{background:white;color:#181818;border-radius:0;border:1px solid #ddd;box-shadow:none;max-height:90svh;overflow:auto;gap:24px;padding:32px;width:calc(100% - 32px)}
+.album-dialog[data-slot=dialog-content]{max-width:660px}
+body:has(.redesign-dialog) [data-slot=dialog-overlay]{background:rgba(255,255,255,.88);backdrop-filter:none}
+.redesign-dialog[data-slot=dialog-content] [data-slot=dialog-title]{font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:18px;line-height:1.5;padding-right:24px}
+.redesign-dialog[data-slot=dialog-content] [data-slot=dialog-description]{font-size:14px;line-height:1.6;color:#707070}
+:is(.redesign-page, .redesign-dialog) .album-dialog-body{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+:is(.redesign-page, .redesign-dialog) .album-dialog-body>img{width:100%;aspect-ratio:1;object-fit:contain}
+:is(.redesign-page, .redesign-dialog) .tracklist{list-style:none;padding:0;margin:0;max-height:270px;overflow:auto}
+:is(.redesign-page, .redesign-dialog) .tracklist li{display:flex;gap:12px;font-size:14px;line-height:1.5;padding:6px 0}
+:is(.redesign-page, .redesign-dialog) .tracklist li>span{min-width:17px;color:#707070;font-size:12px}
+:is(.redesign-page, .redesign-dialog) .record-intro{font-size:16px;color:#707070}
+:is(.redesign-page, .redesign-dialog) .spotify-player{border:0;border-radius:0;display:block}
+:is(.redesign-page, .redesign-dialog) .stream-links{display:flex;gap:24px;flex-wrap:wrap;font-size:14px}
+:is(.redesign-page, .redesign-dialog) .stream-links a{display:inline-flex;gap:6px;align-items:center;text-decoration:underline;text-underline-offset:3px}
+.video-dialog[data-slot=dialog-content]{max-width:1040px}.video-dialog iframe{width:100%;aspect-ratio:16/9;border:0}
+.video-dialog .text-link{justify-self:start}
+.signup-dialog[data-slot=dialog-content]{max-width:450px;padding:36px}
+:is(.redesign-page, .redesign-dialog) .unlock-success{font-size:16px;line-height:1.6}:is(.redesign-page, .redesign-dialog) .unlock-success>p{margin:13px 0 20px}
+:is(.redesign-page, .redesign-dialog) .primary-action{display:inline-flex;gap:14px;align-items:center;font-size:14px;border:1px solid #181818;padding:11px 15px}
+@media(min-width:1600px){:is(.redesign-page, .redesign-dialog) .site-header,:is(.redesign-page, .redesign-dialog) .site-footer{padding-left:4vw;padding-right:4vw}:is(.redesign-page, .redesign-dialog) .first-listen{margin-top:58px}}
+@media(max-width:700px){
+ :is(.redesign-page, .redesign-dialog) .site-header{padding:24px 20px;grid-template-columns:1fr auto;gap:23px;font-size:14px}
+ :is(.redesign-page, .redesign-dialog) .site-header nav{grid-column:1/-1;grid-row:2;justify-content:center;gap:32px}:is(.redesign-page, .redesign-dialog) .subscribe-link{grid-column:2;grid-row:1}
+ :is(.redesign-page, .redesign-dialog) .first-listen{margin:42px auto 70px;width:min(290px,100%)}:is(.redesign-page, .redesign-dialog) .first-listen h1{font-size:16px}
+ :is(.redesign-page, .redesign-dialog) .page-shell{width:calc(100% - 40px)}:is(.redesign-page, .redesign-dialog) .release{width:min(360px,100%)}
+ :is(.redesign-page, .redesign-dialog) .release-list{gap:90px}:is(.redesign-page, .redesign-dialog) .release h3{margin-top:21px;font-size:14px}:is(.redesign-page, .redesign-dialog) .release-links{font-size:14px;gap:21px}
+ :is(.redesign-page, .redesign-dialog) .more-link{margin-top:47px}:is(.redesign-page, .redesign-dialog) .videos-section{margin-top:100px}:is(.redesign-page, .redesign-dialog) .section-heading{margin-bottom:26px}
+ :is(.redesign-page, .redesign-dialog) .video-list{gap:49px}:is(.redesign-page, .redesign-dialog) .video-post h3{font-size:14px}:is(.redesign-page, .redesign-dialog) .shop-section{padding-top:96px}:is(.redesign-page, .redesign-dialog) .connect-section{margin-top:96px}
+ :is(.redesign-page, .redesign-dialog) .site-footer{padding:72px 20px 22px;align-items:start;gap:20px;flex-wrap:wrap}:is(.redesign-page, .redesign-dialog) .site-footer>div{gap:20px}
+ :is(.redesign-page, .redesign-dialog) .audio-dock{padding:9px 16px;grid-template-columns:auto 1fr;gap:11px}:is(.redesign-page, .redesign-dialog) .dock-track{font-size:12px}:is(.redesign-page, .redesign-dialog) .dock-controls{gap:8px;justify-self:stretch}:is(.redesign-page, .redesign-dialog) .dock-unlock{display:none}:is(.redesign-page, .redesign-dialog) .replay-button{display:none}
+ :is(.redesign-page, .redesign-dialog) .dock-controls .play-button{width:24px}:is(.redesign-page, .redesign-dialog) .song-slider{min-width:35px}:is(.redesign-page, .redesign-dialog) .dock-controls .time{font-size:12px}:is(.redesign-page, .redesign-dialog) .audio-dock .song-slider{padding:12px 0}
+ .album-dialog[data-slot=dialog-content]{padding:25px;gap:20px}:is(.redesign-page, .redesign-dialog) .album-dialog-body{gap:17px}:is(.redesign-page, .redesign-dialog) .tracklist{max-height:185px}:is(.redesign-page, .redesign-dialog) .tracklist li{font-size:13px;gap:8px}:is(.redesign-page, .redesign-dialog) .stream-links{gap:16px}
+ .video-dialog[data-slot=dialog-content]{padding:25px 16px}.signup-dialog[data-slot=dialog-content]{padding:32px 25px}
+}
+@media(max-width:370px){:is(.redesign-page, .redesign-dialog) .album-dialog-body{grid-template-columns:1fr}:is(.redesign-page, .redesign-dialog) .album-dialog-body>img{max-width:210px}:is(.redesign-page, .redesign-dialog) .tracklist{max-height:220px}:is(.redesign-page, .redesign-dialog) .audio-dock{gap:8px}:is(.redesign-page, .redesign-dialog) .dock-track{font-size:12px}:is(.redesign-page, .redesign-dialog) .dock-controls{gap:5px}}
+@media(prefers-reduced-motion:reduce){html:has(.redesign-page){scroll-behavior:auto}:is(.redesign-page, .redesign-dialog), :is(.redesign-page, .redesign-dialog) *,:is(.redesign-page, .redesign-dialog) *::before,:is(.redesign-page, .redesign-dialog) *::after{animation:none!important;transition:none!important}}
+.redesign-dialog { font:16px/1.5 Arial,Helvetica,sans-serif; }
