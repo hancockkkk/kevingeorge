@@ -1,9 +1,10 @@
 import React from "react"
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Header } from "@/components/Header";
+import { SiteShell } from "@/components/SiteShell";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import "./redesign.css";
 
 export const metadata: Metadata = {
   title: "Kevin George",
@@ -42,8 +43,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main>{children}</main>
+          <SiteShell>{children}</SiteShell>
           <Analytics />
         </ThemeProvider>
       </body>
