@@ -1,0 +1,135 @@
+[
+  {
+    "id": "ep-1",
+    "title": "LOVELAND",
+    "year": "2018",
+    "color": "#8B5CF6",
+    "coverImage": "/media/ep-1.jpg",
+    "tracklist": [
+      "High Like This",
+      "My Crew",
+      "Drink Or D'usse",
+      "Domino Effect",
+      "Not Interested",
+      "Over",
+      "Loving Come Easy"
+    ],
+    "spotifyLink": "https://open.spotify.com/album/0D8VNJjlq0y5NOmFOtdO0f?si=5ssBf8HtSVumgIKYu_tlQw",
+    "appleMusicLink": "https://music.apple.com/us/album/loveland/1361855858"
+  },
+  {
+    "id": "ep-2",
+    "title": "FORTINA",
+    "year": "2018",
+    "color": "#F59E0B",
+    "coverImage": "/media/ep-2.jpg",
+    "tracklist": [
+      "Lovesick (feat. Billy)",
+      "OMG (feat. Billy)",
+      "Rolling Stone",
+      "Madonna",
+      "She Don't Love Me (feat. Gunna)",
+      "LA DI DA",
+      "MIA"
+    ],
+    "spotifyLink": "https://open.spotify.com/album/2meJNpTO6oKiuLtoFYrqMO?si=i6WhVfn6Rq2DV9Su5e9Ufw",
+    "appleMusicLink": "https://music.apple.com/us/album/fortina/1410563733"
+  },
+  {
+    "id": "ep-3",
+    "title": "THE HOPELESS ROMANTIC",
+    "year": "2018",
+    "color": "#EF4444",
+    "coverImage": "/media/ep-3.jpg",
+    "tracklist": [
+      "Call Me When You're Sober",
+      "Need Your Love",
+      "You're Just Like Your Mama",
+      "Dead Ends (feat. Chandler Elyse)",
+      "Everybody Lies",
+      "Nobody Knows You Anymore",
+      "Perfect Timing"
+    ],
+    "spotifyLink": "https://open.spotify.com/album/0k5V7Haw0fdUqGK8IEoyRo?si=K8EoAdrIQcmJrbIQh1iY8A",
+    "appleMusicLink": "https://music.apple.com/us/album/hopeless-romantic-ep/1439399188"
+  },
+  {
+    "id": "album-my-darlings-a-demon",
+    "title": "MY DARLING'S A DEMON",
+    "year": "2019",
+    "color": "#8B0000",
+    "coverImage": "/media/album-my-darlings-a-demon.jpg",
+    "tracklist": [
+      "Wait",
+      "All of Me",
+      "Wish You Were Here",
+      "I Better Find Your Love",
+      "Don't Sleep Without Me",
+      "Lay It On Me",
+      "Switch Up",
+      "Sweet Darling",
+      "Off the Wall",
+      "Reeses",
+      "Why Would I Love Again",
+      "Last Night I Lost Reason",
+      "You Won't Get Me Back",
+      "I'm Not The Best For You"
+    ],
+    "spotifyLink": "https://open.spotify.com/album/1Z08UDoHKkFRdbgYV0CLSm?si=S50KA5UqQV69LcJPhuwudw",
+    "appleMusicLink": "https://music.apple.com/us/artist/kevin-george/1325859703"
+  },
+  {
+    "id": "ep-4",
+    "title": "THREE CAN PLAY, AT LOVE",
+    "year": "2020",
+    "color": "#06B6D4",
+    "coverImage": "/media/ep-4.jpg",
+    "tracklist": [],
+    "spotifyLink": "https://open.spotify.com/album/7DZsFMZbo535eMeaexDw3p?si=dCktC36aRAaU4mPGZgNVqg",
+    "appleMusicLink": "https://music.apple.com/us/album/three-can-play-at-love-ep/1503235355"
+  },
+  {
+    "id": "ep-5",
+    "title": "FORTINA II",
+    "year": "2020",
+    "color": "#F59E0B",
+    "coverImage": "/media/ep-5.jpg",
+    "tracklist": [],
+    "spotifyLink": "https://open.spotify.com/album/1r6ijP2axKFch9IG2CALVo?si=bay5orPOQxOCiY6ZMvHz4A",
+    "appleMusicLink": "https://music.apple.com/us/album/fortina-ii/1525456498"
+  },
+  {
+    "id": "ep-everybodys-in-my-ear",
+    "title": "EVERYBODY'S IN MY EAR",
+    "year": "2021",
+    "color": "#111111",
+    "coverImage": "/media/ep-everybodys-in-my-ear.jpg",
+    "tracklist": [
+      "INTRO",
+      "EVERYBODY'S IN MY EAR",
+      "ALL IN MY HEAD",
+      "OUTSIDE",
+      "SUPER SWEET",
+      "CONFUSED",
+      "DREAMSTATE"
+    ],
+    "spotifyLink": "https://open.spotify.com/album/6jgwS3qrYF920kSmpuvFck?si=bQCsYSRCRTyuFle3t_XsCw",
+    "appleMusicLink": "https://music.apple.com/us/album/everybodys-in-my-ear/1819746356"
+  },
+  {
+    "id": "ep-stay-away",
+    "title": "STAY AWAY",
+    "year": "2023",
+    "color": "#111111",
+    "coverImage": "/media/ep-stay-away.jpg",
+    "tracklist": [
+      "STAY AWAY",
+      "JOHN DOE",
+      "Fly Low",
+      "Baby Wouldn't Have Me Waiting",
+      "OFF THE SHROOMS"
+    ],
+    "spotifyLink": "https://open.spotify.com/album/30yggwAnGnsArpQh19bI1Z?si=F8kMbYrmRCikd1neF2AVnQ",
+    "appleMusicLink": "https://music.apple.com/us/album/stay-away-ep/1716361550"
+  }
+]
