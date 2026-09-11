@@ -16,9 +16,8 @@ html:has(.redesign-page){scroll-behavior:smooth;scroll-padding-top:32px}
 :is(.redesign-page, .redesign-dialog) .cover-play{position:absolute;right:16px;bottom:16px;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#fff;color:#181818;box-shadow:0 2px 12px rgba(0,0,0,.15);transition:transform .2s ease}
 :is(.redesign-page, .redesign-dialog) .apologies-cover:hover .cover-play{transform:scale(1.06)}
 :is(.redesign-page, .redesign-dialog) .first-listen h1{font-size:20px;line-height:1.4;margin:0 0 4px}
-:is(.redesign-page, .redesign-dialog) .apologies-artist{font-size:14px}
-:is(.redesign-page, .redesign-dialog) .apologies-release-date{font-size:14px;color:#707070;margin-top:12px;margin-bottom:17px}
-:is(.redesign-page, .redesign-dialog) .first-listen .inline-player{max-width:330px;margin:0 auto}
+:is(.redesign-page, .redesign-dialog) .apologies-release-date{font-size:14px;color:#707070;margin-top:20px}
+:is(.redesign-page, .redesign-dialog) .first-listen .inline-player{max-width:330px;margin:17px auto 0}
 :is(.redesign-page, .redesign-dialog) .first-listen .play-button{width:44px;height:44px}
 @keyframes apologies-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 :is(.redesign-page, .redesign-dialog) .inline-player{display:flex;align-items:center;gap:14px;width:100%}
