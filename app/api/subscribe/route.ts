@@ -3,7 +3,6 @@ import {
   emailPattern,
   normalizeEmail,
   saveSubscriber,
-  syncResendContact,
   triggerWelcomeAutomation,
 } from "@/lib/audience";
 
@@ -20,10 +19,9 @@ export async function POST(request: Request) {
       );
     }
 
-    await saveSubscriber(email);
+    const contact = await saveSubscriber(email);
 
     try {
-      const contact = await syncResendContact(email);
       if (contact.created) {
         await triggerWelcomeAutomation(email);
       }

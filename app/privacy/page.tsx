@@ -54,7 +54,7 @@ export default function PrivacyPage() {
         <h2>Service Providers</h2>
         <p>
           We use service providers to operate the site and email list,
-          including Supabase for subscriber data, Resend for email delivery and
+          including Resend for subscriber data, email delivery, and
           contact management, and Vercel for hosting and privacy-focused web
           analytics. These providers process information on our behalf under
           their own terms and privacy commitments. We may also disclose
