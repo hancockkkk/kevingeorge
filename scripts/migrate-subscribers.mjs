@@ -1,6 +1,7 @@
 import { ensureContactProperties, migrateSubscriber } from "../lib/resend-audience.mjs";
 
-// Temporary cutover hook: only the authorized production deployment imports data.
+// Historical migration utility. Not called by builds or the website.
+// Run only for an explicitly authorized recovery/import with production credentials.
 // No emails/events are sent. Source data is read-only and remains available for recovery.
 if (process.env.VERCEL_ENV === "production") {
   const url = process.env.SUPABASE_URL?.replace(/\/$/, "");
