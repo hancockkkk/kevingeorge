@@ -33,7 +33,7 @@ test("failed Resend write cannot report signup success", async () => {
 });
 
 test("existing subscriber is not new and other brand preferences are untouched", async () => {
-  const calls = mock(call => call.path.endsWith("/segments") ? [200, { data: [{ id: "kevin-george-only" }, { id: "other-brand" }], has_more: false }] : [200, { unsubscribed: false, properties: { kg_created_at: "2026-08-24" } }]);
+  const calls = mock(call => call.path.endsWith("/segments") ? [200, { data: [{ id: "kevin-george-only" }, { id: "other-brand" }], has_more: false }] : [200, { unsubscribed: false, properties: { kg_created_at: { value: "2026-08-24", type: "string" } } }]);
   assert.deepEqual(await saveSubscriber("fan@example.com"), { created: false });
   assert.equal(calls.find(c => c.method === "PATCH").body.unsubscribed, undefined);
   assert.ok(calls.filter(c => c.method === "POST").every(c => c.path.endsWith("/kevin-george-only")));
@@ -66,7 +66,7 @@ test("migration preserves opt-out and consent without sending mail or events", a
   const calls = mock(call => {
     if (call.method === "PATCH") properties = call.body.properties;
     if (call.path.endsWith("/segments")) return [200, { data: [], has_more: false }];
-    return [200, { unsubscribed: true, properties: properties ?? {} }];
+    return [200, { unsubscribed: true, properties: Object.fromEntries(Object.entries(properties ?? {}).map(([key, value]) => [key, { value, type: "string" }])) }];
   });
   await migrateSubscriber({ email: "fan@example.com", email_consent: true, status: "active", consent_version: "original", consented_at: "2026-08-24T10:00:00Z", source: "website", created_at: "2026-08-24T10:00:00Z", updated_at: "2026-08-24T10:00:00Z" });
   assert.equal(properties.kg_status, "unsubscribed");
