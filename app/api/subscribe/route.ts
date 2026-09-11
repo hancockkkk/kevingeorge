@@ -36,14 +36,12 @@ export async function POST(request: Request) {
         "You are in. Kevin George will send the next move straight to you.",
     });
   } catch (error) {
+    console.error("Subscriber signup failed.", error);
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Could not join the list. Please try again.",
+        error: "We couldn't save your email right now. Please try again shortly.",
       },
-      { status: 500 },
+      { status: 503 },
     );
   }
 }
