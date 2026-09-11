@@ -94,12 +94,11 @@ export default function Home() {
     <main className="page-shell">
       <section className="first-listen" aria-labelledby="apologies-title">
         <button className="apologies-cover" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'} aria-pressed={playing}>
-          <img src="/media/apologies-cover.webp" alt="Apologies cover art: a black silhouette and spiked crown against a textured red background" width="1400" height="1400" fetchPriority="high"/>
+          <img src="/media/apologies-cover-final.webp" alt="Apologies cover art: a textured portrait with a black spiked crown against a red background" width="1400" height="1400" fetchPriority="high"/>
           <span className="cover-play" aria-hidden="true">{playing ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}</span>
         </button>
         <h1 id="apologies-title">Apologies</h1>
-        <p className="apologies-artist">Kevin George</p>
-        <p className="apologies-release-date">Coming soon, <time dateTime="2026-10-02">10-02-2026</time></p>
+        <p className="release-year">2026</p>
         <div className="inline-player">
           <button className="play-button" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'}>{playing ? <Pause size={16} fill="currentColor"/> : <Play size={16} fill="currentColor"/>}</button>
           <span className="time">{fmt(elapsed)}</span>
@@ -108,6 +107,7 @@ export default function Home() {
         </div>
         <button className="preview-note" onClick={() => setSignupOpen(true)}>{unlocked ? 'Full track unlocked' : 'Subscribe to hear the full song.'}</button>
         {audioError && <p className="form-error" role="alert">{audioError}</p>}
+        <p className="apologies-release-date"><time dateTime="2026-10-02">10-02-2026</time></p>
       </section>
 
       <section id="music" className="music-section" aria-labelledby="music-heading">
