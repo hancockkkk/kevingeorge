@@ -93,7 +93,13 @@ export default function Home() {
     </header>
     <main className="page-shell">
       <section className="first-listen" aria-labelledby="apologies-title">
-        <h1 id="apologies-title">APOLOGIES</h1>
+        <button className="apologies-cover" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'} aria-pressed={playing}>
+          <img src="/media/apologies-cover.webp" alt="Apologies cover art: a black silhouette and spiked crown against a textured red background" width="1400" height="1400" fetchPriority="high"/>
+          <span className="cover-play" aria-hidden="true">{playing ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}</span>
+        </button>
+        <h1 id="apologies-title">Apologies</h1>
+        <p className="apologies-artist">Kevin George</p>
+        <p className="apologies-release-date">Coming soon, <time dateTime="2026-10-02">10-02-2026</time></p>
         <div className="inline-player">
           <button className="play-button" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'}>{playing ? <Pause size={16} fill="currentColor"/> : <Play size={16} fill="currentColor"/>}</button>
           <span className="time">{fmt(elapsed)}</span>
