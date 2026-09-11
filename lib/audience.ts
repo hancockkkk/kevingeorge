@@ -1,3 +1,5 @@
+import { resendRequest } from "./resend-audience.mjs";
+
 export type Subscriber = {
   email: string;
   status: "active" | "unsubscribed" | "bounced" | "complained";
@@ -14,27 +16,10 @@ export function normalizeEmail(email: string) {
 export { getSubscribers, saveSubscriber, updateSubscriberStatus } from "./resend-audience.mjs";
 
 export async function triggerWelcomeAutomation(email: string) {
-  const apiKey = process.env.RESEND_API_KEY;
-
-  if (!apiKey) {
-    return { triggered: false, skipped: true };
-  }
-
-  const response = await fetch("https://api.resend.com/events/send", {
+  await resendRequest("/events/send", {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      event: "kevin_george.subscribed",
-      email,
-    }),
+    body: { event: "kevin_george.subscribed", email },
   });
-
-  if (!response.ok) {
-    throw new Error("Could not trigger the welcome email.");
-  }
 
   return { triggered: true, skipped: false };
 }
