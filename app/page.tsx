@@ -4,6 +4,7 @@ import { ArrowUpRight, Check, Pause, Play, RotateCcw, Volume2, VolumeX } from 'l
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
+import { useScrollPull } from '@/hooks/use-scroll-pull';
 import catalog from './catalog.json';
 import films from './films.json';
 
@@ -54,6 +55,7 @@ export default function Home() {
   const [showAllFilms, setShowAllFilms] = useState(false);
   const [audioError, setAudioError] = useState('');
   const playLimit = unlocked ? duration : 30;
+  useScrollPull([showAllRecords, showAllFilms]);
 
   useEffect(() => {
     try {
@@ -92,7 +94,7 @@ export default function Home() {
       <button className="subscribe-link" onClick={() => setSignupOpen(true)}>Subscribe</button>
     </header>
     <main className="page-shell">
-      <section className="first-listen" aria-labelledby="apologies-title">
+      <section className="first-listen" aria-labelledby="apologies-title" data-pull>
         <button className="apologies-cover" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'} aria-pressed={playing}>
           <img src="/media/apologies-cover-final.webp" alt="Apologies cover art: a textured portrait with a black spiked crown against a red background" width="1400" height="1400" fetchPriority="high"/>
           <span className="cover-play" aria-hidden="true">{playing ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}</span>
@@ -113,7 +115,7 @@ export default function Home() {
       <section id="music" className="music-section" aria-labelledby="music-heading">
         <h2 id="music-heading" className="section-label">MUSIC</h2>
         <div id="record-collection" className="release-list">
-          {(showAllRecords ? records : records.slice(0, 4)).map((album, i) => <article className="release" key={album.id}>
+          {(showAllRecords ? records : records.slice(0, 4)).map((album, i) => <article className="release" key={album.id} data-pull>
             <button className="cover-button" onClick={() => openAlbum(album)} aria-label={`Listen to ${album.title}`}><img src={album.coverImage} alt={`${album.title} cover`} loading={i === 0 ? 'eager' : 'lazy'} width="420" height="420"/></button>
             <h3><button onClick={() => openAlbum(album)}>{album.title}</button></h3>
             <p className="release-year">{album.year}</p>
@@ -124,16 +126,16 @@ export default function Home() {
       </section>
 
       <section id="films" className="videos-section" aria-labelledby="videos-heading">
-        <div className="section-heading"><h2 id="videos-heading" className="section-label">VIDEOS</h2><a href="https://www.youtube.com/@KevinGeorge" target="_blank" rel="noreferrer">YouTube ↗</a></div>
-        <div className="video-list" id="video-list">{(showAllFilms ? [...featuredFilms, ...films.filter(film => !featuredFilms.some(feature => feature.id === film.id))] : featuredFilms).map(film => <article key={film.id} className="video-post">
+        <div className="section-heading" data-pull><h2 id="videos-heading" className="section-label">VIDEOS</h2><a href="https://www.youtube.com/@KevinGeorge" target="_blank" rel="noreferrer">YouTube ↗</a></div>
+        <div className="video-list" id="video-list">{(showAllFilms ? [...featuredFilms, ...films.filter(film => !featuredFilms.some(feature => feature.id === film.id))] : featuredFilms).map(film => <article key={film.id} className="video-post" data-pull>
           <button className="video-button" onClick={() => openFilm(film)} aria-label={`Watch ${film.title}`}><span className="video-image">{film.thumbnail && <img src={film.thumbnail} alt={`Still from ${film.title}`} loading="lazy"/>}<span className="video-play"><Play size={24} fill="currentColor"/></span></span></button>
           <h3><button onClick={() => openFilm(film)}>{film.title}</button></h3>
         </article>)}</div>
         <button className="more-link" onClick={() => setShowAllFilms(!showAllFilms)} aria-expanded={showAllFilms} aria-controls="video-list">{showAllFilms ? 'Fewer videos −' : 'More videos +'}</button>
       </section>
 
-      <section id="shop" className="shop-section"><h2 className="section-label">SHOP</h2><p>Coming soon.</p></section>
-      <section id="connect" className="connect-section"><h2 className="section-label">SUBSCRIBE</h2><p>Music, releases, and updates.</p><SignupForm id="footer-email" onSuccess={unlock}/>{unlocked && <button className="text-link" onClick={toggleAudio}>{playing ? 'Pause Apologies' : 'Listen to Apologies'}</button>}</section>
+      <section id="shop" className="shop-section" data-pull><h2 className="section-label">SHOP</h2><p>Coming soon.</p></section>
+      <section id="connect" className="connect-section" data-pull><h2 className="section-label">SUBSCRIBE</h2><p>Music, releases, and updates.</p><SignupForm id="footer-email" onSuccess={unlock}/>{unlocked && <button className="text-link" onClick={toggleAudio}>{playing ? 'Pause Apologies' : 'Listen to Apologies'}</button>}</section>
     </main>
     <footer className="site-footer"><span>© {new Date().getFullYear()} Kevin George</span><div><a href="https://www.kevingeorge.xyz/privacy" target="_blank" rel="noreferrer">Privacy</a><a href="https://www.kevingeorge.xyz/terms" target="_blank" rel="noreferrer">Terms</a><a href="#top">Top ↑</a></div></footer>
 
