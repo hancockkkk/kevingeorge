@@ -122,3 +122,8 @@ body:has(.redesign-dialog) [data-slot=dialog-overlay]{background:rgba(255,255,25
 @media(max-width:370px){:is(.redesign-page, .redesign-dialog) .album-dialog-body{grid-template-columns:1fr}:is(.redesign-page, .redesign-dialog) .album-dialog-body>img{max-width:210px}:is(.redesign-page, .redesign-dialog) .tracklist{max-height:220px}:is(.redesign-page, .redesign-dialog) .audio-dock{gap:8px}:is(.redesign-page, .redesign-dialog) .dock-track{font-size:12px}:is(.redesign-page, .redesign-dialog) .dock-controls{gap:5px}}
 @media(prefers-reduced-motion:reduce){html:has(.redesign-page){scroll-behavior:auto}:is(.redesign-page, .redesign-dialog), :is(.redesign-page, .redesign-dialog) *,:is(.redesign-page, .redesign-dialog) *::before,:is(.redesign-page, .redesign-dialog) *::after{animation:none!important;transition:none!important}}
 .redesign-dialog { font:16px/1.5 Arial,Helvetica,sans-serif; }
+:is(.redesign-page, .redesign-dialog) .song-gate{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:24px}
+:is(.redesign-page, .redesign-dialog) .song-gate>p{font-size:14px;color:#707070}
+:is(.redesign-page, .redesign-dialog) .song-gate .primary-action{justify-content:center;min-height:48px;line-height:1.5}
+:is(.redesign-page, .redesign-dialog) .returning-link{font-size:12px;color:#707070;text-decoration:underline;text-underline-offset:3px;min-height:32px}
+:is(.redesign-page, .redesign-dialog) .access-message{font-size:14px;line-height:1.6;margin-top:16px;color:#707070}
