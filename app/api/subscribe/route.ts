@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 import {
   emailPattern,
   normalizeEmail,
-  saveSubscriber,
-  triggerWelcomeAutomation,
 } from "@/lib/audience";
+import { subscribeAndNotify } from "@/lib/subscriber-signup.mjs";
 
 export async function POST(request: Request) {
   try {
@@ -19,25 +18,17 @@ export async function POST(request: Request) {
       );
     }
 
-    const contact = await saveSubscriber(email);
-
-    try {
-      if (contact.created) {
-        await triggerWelcomeAutomation(email);
-      }
-    } catch (error) {
-      console.error("Resend subscriber workflow failed.", error);
-    }
+    await subscribeAndNotify(email);
 
     return NextResponse.json({
       message:
-        "You are in. Kevin George will send the next move straight to you.",
+        "You're on the list. Check your email for your Apologies link, including Promotions or Spam.",
     });
   } catch (error) {
     console.error("Subscriber signup failed.", error);
     return NextResponse.json(
       {
-        error: "We couldn't save your email right now. Please try again shortly.",
+        error: "We couldn't complete your signup email right now. Please try again shortly.",
       },
       { status: 503 },
     );

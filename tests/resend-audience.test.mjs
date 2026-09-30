@@ -21,7 +21,7 @@ function mock(handler) {
 
 test("new signup saves consent and KG membership together, without Supabase", async () => {
   const calls = mock(call => call.method === "GET" ? [404, {}] : [200, { id: "new-contact" }]);
-  assert.deepEqual(await saveSubscriber("fan@example.com"), { created: true });
+  assert.deepEqual(await saveSubscriber("fan@example.com"), { created: true, active: true, welcomePending: true });
   assert.deepEqual(calls[1].body.segments, [{ id: "kevin-george-only" }]);
   assert.equal(calls[1].body.properties.kg_consent_version, "2026-08-24");
   assert.equal(calls[1].body.properties.kg_source, "website");
@@ -34,14 +34,14 @@ test("failed Resend write cannot report signup success", async () => {
 
 test("existing subscriber is not new and other brand preferences are untouched", async () => {
   const calls = mock(call => call.path.endsWith("/segments") ? [200, { data: [{ id: "kevin-george-only" }, { id: "other-brand" }], has_more: false }] : [200, { unsubscribed: false, properties: { kg_created_at: { value: "2026-08-24", type: "string" } } }]);
-  assert.deepEqual(await saveSubscriber("fan@example.com"), { created: false });
+  assert.deepEqual(await saveSubscriber("fan@example.com"), { created: false, active: true, welcomePending: false });
   assert.equal(calls.find(c => c.method === "PATCH").body.unsubscribed, undefined);
   assert.ok(calls.filter(c => c.method === "POST").every(c => c.path.endsWith("/kevin-george-only")));
 });
 
 test("public signup never reactivates an unsubscribed contact", async () => {
   const calls = mock(call => call.path.endsWith("/segments") ? [200, { data: [], has_more: false }] : [200, { unsubscribed: true, properties: {} }]);
-  assert.deepEqual(await saveSubscriber("fan@example.com"), { created: false });
+  assert.deepEqual(await saveSubscriber("fan@example.com"), { created: false, active: false, welcomePending: false });
   assert.ok(!calls.some(c => c.method === "POST"));
   assert.equal(calls.find(c => c.method === "PATCH").body.properties.kg_status, "unsubscribed");
 });

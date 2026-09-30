@@ -1,5 +1,3 @@
-import { resendRequest } from "./resend-audience.mjs";
-
 export type Subscriber = {
   email: string;
   status: "active" | "unsubscribed" | "bounced" | "complained";
@@ -14,15 +12,6 @@ export function normalizeEmail(email: string) {
 }
 
 export { getSubscribers, saveSubscriber, updateSubscriberStatus } from "./resend-audience.mjs";
-
-export async function triggerWelcomeAutomation(email: string) {
-  await resendRequest("/events/send", {
-    method: "POST",
-    body: { event: "kevin_george.subscribed", email },
-  });
-
-  return { triggered: true, skipped: false };
-}
 
 export async function sendEmail({
   to,
