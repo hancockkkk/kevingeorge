@@ -16,7 +16,6 @@ html:has(.redesign-page){scroll-behavior:smooth;scroll-padding-top:32px}
 :is(.redesign-page, .redesign-dialog) .cover-play{position:absolute;right:16px;bottom:16px;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#fff;color:#181818;box-shadow:0 2px 12px rgba(0,0,0,.15);transition:transform .2s ease}
 :is(.redesign-page, .redesign-dialog) .apologies-cover:hover .cover-play{transform:scale(1.06)}
 :is(.redesign-page, .redesign-dialog) .first-listen h1{font-size:20px;line-height:1.4;margin:0 0 4px}
-:is(.redesign-page, .redesign-dialog) .apologies-release-date{font-size:14px;color:#707070;margin-top:20px}
 :is(.redesign-page, .redesign-dialog) .first-listen .inline-player{max-width:330px;margin:17px auto 0}
 :is(.redesign-page, .redesign-dialog) .first-listen .play-button{width:44px;height:44px}
 @keyframes apologies-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
@@ -27,7 +26,6 @@ html:has(.redesign-page){scroll-behavior:smooth;scroll-padding-top:32px}
 :is(.redesign-page, .redesign-dialog) .song-slider [data-slot=slider-track]{height:2px;border-radius:0;background:#ddd}
 :is(.redesign-page, .redesign-dialog) .song-slider [data-slot=slider-range]{background:#181818}
 :is(.redesign-page, .redesign-dialog) .song-slider [data-slot=slider-thumb]{width:6px;height:6px;border:0;background:#181818;border-radius:0;box-shadow:none}
-:is(.redesign-page, .redesign-dialog) .preview-note{font-size:12px;color:#707070;line-height:1.6;margin-top:13px}:is(.redesign-page, .redesign-dialog) .preview-note:hover{text-decoration:underline;text-underline-offset:3px}
 :is(.redesign-page, .redesign-dialog) .section-label{font-size:14px;line-height:1.5;font-weight:400}
 :is(.redesign-page, .redesign-dialog) .music-section{text-align:center}
 :is(.redesign-page, .redesign-dialog) .music-section>.section-label{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap}
@@ -90,9 +88,8 @@ body:has(.redesign-dialog) [data-slot=dialog-overlay]{background:rgba(255,255,25
 .signup-dialog[data-slot=dialog-content]{max-width:450px;padding:36px}
 :is(.redesign-page, .redesign-dialog) .unlock-success{font-size:16px;line-height:1.6}:is(.redesign-page, .redesign-dialog) .unlock-success>p{margin:13px 0 20px}
 :is(.redesign-page, .redesign-dialog) .primary-action{display:inline-flex;gap:14px;align-items:center;font-size:14px;border:1px solid #181818;padding:11px 15px}
-:is(.redesign-page, .redesign-dialog) .track-download{margin-top:8px}
+:is(.redesign-page, .redesign-dialog) .track-download{margin-top:20px}
 :is(.redesign-page, .redesign-dialog) .download-link{min-height:44px;flex-wrap:wrap;justify-content:center}
-:is(.redesign-page, .redesign-dialog) .download-format{font-size:11px;color:#707070;text-decoration:none}
 :is(.redesign-page, .redesign-dialog) .subscriber-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px}
 :is(.redesign-page, .redesign-dialog) .connect-section>.subscriber-actions{margin-top:24px}
 .redesign-page{overflow-x:clip}
@@ -127,3 +124,5 @@ body:has(.redesign-dialog) [data-slot=dialog-overlay]{background:rgba(255,255,25
 :is(.redesign-page, .redesign-dialog) .song-gate .primary-action{justify-content:center;min-height:48px;line-height:1.5}
 :is(.redesign-page, .redesign-dialog) .returning-link{font-size:12px;color:#707070;text-decoration:underline;text-underline-offset:3px;min-height:32px}
 :is(.redesign-page, .redesign-dialog) .access-message{font-size:14px;line-height:1.6;margin-top:16px;color:#707070}
+
+:is(.redesign-page, .redesign-dialog) .download-status{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:13px;color:#707070}

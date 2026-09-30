@@ -15,8 +15,10 @@ const records = catalog.slice().reverse();
 const featuredFilms = ['iQHCFUq1GQA', 'qmerpevLK4o', 'q_OJG46cMno'].map(id => films.find(f => f.id === id)!);
 const fmt = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
 
-function ApologiesDownload() {
-  return <a className="text-link download-link" href="/media/apologies.mp3" download="Kevin George - Apologies.mp3"><Download size={16} aria-hidden="true"/>Download Apologies <span className="download-format">MP3</span></a>;
+function ApologiesDownload({ coolingDown, onDownload }: { coolingDown: boolean; onDownload: () => boolean }) {
+  return coolingDown
+    ? <span className="download-status" role="status"><Check size={16} aria-hidden="true"/>Download requested. Retry in a moment.</span>
+    : <a className="text-link download-link" href="/media/apologies.mp3" download="Kevin George - Apologies.mp3" onClick={event => { if (!onDownload()) event.preventDefault(); }}><Download size={16} aria-hidden="true"/>Download Apologies</a>;
 }
 
 function ReturningSubscriberForm() {
@@ -81,8 +83,23 @@ export default function Home() {
   const [showAllRecords, setShowAllRecords] = useState(false);
   const [showAllFilms, setShowAllFilms] = useState(false);
   const [audioError, setAudioError] = useState('');
+  const [downloadCoolingDown, setDownloadCoolingDown] = useState(false);
+  const downloadReadyAt = useRef(0);
+  const downloadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const playLimit = duration;
   useScrollPull([showAllRecords, showAllFilms]);
+
+  useEffect(() => () => { if (downloadTimer.current) clearTimeout(downloadTimer.current); }, []);
+
+  // Prevent rapid repeat clicks across all three download links. Hosting-level
+  // rate limiting is separate; this is a courtesy delay, not access control.
+  function startDownload() {
+    if (Date.now() < downloadReadyAt.current) return false;
+    downloadReadyAt.current = Date.now() + 30_000;
+    setDownloadCoolingDown(true);
+    downloadTimer.current = setTimeout(() => setDownloadCoolingDown(false), 30_000);
+    return true;
+  }
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -138,14 +155,12 @@ export default function Home() {
           <Slider aria-label="Apologies song position" className="song-slider" min={0} max={playLimit} step={0.1} value={[Math.min(elapsed, playLimit)]} onValueChange={seek}/>
           <span className="time">{fmt(playLimit)}</span>
         </div>
-        <p className="preview-note">Full track unlocked</p>
-        <div className="track-download"><ApologiesDownload/></div></> : <div className="song-gate">
+        <div className="track-download"><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div></> : <div className="song-gate">
           <p>Hear it. Download it. Keep it.</p>
           <button className="primary-action" onClick={() => { setReturningSubscriber(false); setSignupOpen(true); }}>Join to hear and download Apologies</button>
           <button className="returning-link" onClick={() => { setReturningSubscriber(true); setSignupOpen(true); }}>Already joined? Get an access link</button>
         </div>}
         {audioError && <p className="form-error" role="alert">{audioError}</p>}
-        <p className="apologies-release-date"><time dateTime="2026-10-02">10-02-2026</time></p>
       </section>
 
       <section id="music" className="music-section" aria-labelledby="music-heading">
@@ -171,7 +186,7 @@ export default function Home() {
       </section>
 
       <section id="shop" className="shop-section" data-pull><h2 className="section-label">SHOP</h2><p>Coming soon.</p></section>
-      <section id="connect" className="connect-section" data-pull><h2 className="section-label">SUBSCRIBE</h2><p>Hear and download “Apologies.” Get music, releases, and updates.</p><SignupForm id="footer-email" onSuccess={unlock}/>{unlocked && <div className="subscriber-actions"><button className="text-link" onClick={toggleAudio}>{playing ? 'Pause Apologies' : 'Listen to Apologies'}</button><ApologiesDownload/></div>}</section>
+      <section id="connect" className="connect-section" data-pull><h2 className="section-label">SUBSCRIBE</h2><p>Hear and download “Apologies.” Get music, releases, and updates.</p><SignupForm id="footer-email" onSuccess={unlock}/>{unlocked && <div className="subscriber-actions"><button className="text-link" onClick={toggleAudio}>{playing ? 'Pause Apologies' : 'Listen to Apologies'}</button><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div>}</section>
     </main>
     <footer className="site-footer"><span>© {new Date().getFullYear()} Kevin George</span><div><a href="https://www.kevingeorge.xyz/privacy" target="_blank" rel="noreferrer">Privacy</a><a href="https://www.kevingeorge.xyz/terms" target="_blank" rel="noreferrer">Terms</a><a href="#top">Top ↑</a></div></footer>
 
@@ -180,6 +195,6 @@ export default function Home() {
 
     <Dialog open={selectedAlbum !== null} onOpenChange={open => { if (!open) setSelectedAlbum(null); }}><DialogContent className="album-dialog redesign-dialog">{selectedAlbum && <><DialogHeader><DialogDescription>{selectedAlbum.year} · Kevin George</DialogDescription><DialogTitle>{selectedAlbum.title}</DialogTitle></DialogHeader><div className="album-dialog-body"><img src={selectedAlbum.coverImage} alt={`${selectedAlbum.title} cover`}/><div>{selectedAlbum.tracklist.length > 0 ? <ol className="tracklist">{selectedAlbum.tracklist.map((track, i) => <li key={track}><span>{String(i + 1).padStart(2, '0')}</span>{track}</li>)}</ol> : <p className="record-intro">Listen below.</p>}</div></div><iframe title={`Spotify player for ${selectedAlbum.title}`} src={`https://open.spotify.com/embed/album/${selectedAlbum.spotifyLink.split('/album/')[1].split('?')[0]}?utm_source=generator&theme=0`} width="100%" height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" className="spotify-player"/><div className="stream-links"><a href={selectedAlbum.spotifyLink} target="_blank" rel="noreferrer">Listen on Spotify <ArrowUpRight size={16}/></a><a href={selectedAlbum.appleMusicLink} target="_blank" rel="noreferrer">Apple Music <ArrowUpRight size={16}/></a></div></>}</DialogContent></Dialog>
     <Dialog open={selectedFilm !== null} onOpenChange={open => { if (!open) setSelectedFilm(null); }}><DialogContent className="video-dialog redesign-dialog">{selectedFilm && <><DialogHeader><DialogDescription>Kevin George · Official music video</DialogDescription><DialogTitle>{selectedFilm.title}</DialogTitle></DialogHeader><iframe title={`${selectedFilm.title} music video`} src={`https://www.youtube.com/embed/${selectedFilm.id}?autoplay=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen/><a className="text-link" href={`https://www.youtube.com/watch?v=${selectedFilm.id}`} target="_blank" rel="noreferrer">Watch on YouTube <ArrowUpRight size={16}/></a></>}</DialogContent></Dialog>
-    <Dialog open={signupOpen} onOpenChange={setSignupOpen}><DialogContent className="signup-dialog redesign-dialog"><DialogHeader><DialogTitle>{!unlocked && returningSubscriber ? 'WELCOME BACK' : 'SUBSCRIBE'}</DialogTitle><DialogDescription>{!unlocked && returningSubscriber ? 'Get an Apologies access link at the email you joined with. No need to subscribe again.' : 'Join the email list to hear and download “Apologies,” plus get updates from Kevin George.'}</DialogDescription></DialogHeader>{unlocked ? <div className="unlock-success"><Check size={28}/><p>You’re connected. Listen to the full song or download it to keep.</p><div className="subscriber-actions"><button className="primary-action" onClick={() => { setSignupOpen(false); void toggleAudio(); }}>Continue listening <Play size={16}/></button><ApologiesDownload/></div></div> : <>{returningSubscriber ? <ReturningSubscriberForm/> : <SignupForm id="dialog-email" onSuccess={unlock}/>}<button className="returning-link" onClick={() => setReturningSubscriber(!returningSubscriber)}>{returningSubscriber ? 'New here? Join the email list' : 'Already joined? Get an access link'}</button></>}</DialogContent></Dialog>
+    <Dialog open={signupOpen} onOpenChange={setSignupOpen}><DialogContent className="signup-dialog redesign-dialog"><DialogHeader><DialogTitle>{!unlocked && returningSubscriber ? 'WELCOME BACK' : 'SUBSCRIBE'}</DialogTitle><DialogDescription>{!unlocked && returningSubscriber ? 'Get an Apologies access link at the email you joined with. No need to subscribe again.' : 'Join the email list to hear and download “Apologies,” plus get updates from Kevin George.'}</DialogDescription></DialogHeader>{unlocked ? <div className="unlock-success"><Check size={28}/><p>You’re connected. Listen to the full song or download it to keep.</p><div className="subscriber-actions"><button className="primary-action" onClick={() => { setSignupOpen(false); void toggleAudio(); }}>Listen <Play size={16}/></button><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div></div> : <>{returningSubscriber ? <ReturningSubscriberForm/> : <SignupForm id="dialog-email" onSuccess={unlock}/>}<button className="returning-link" onClick={() => setReturningSubscriber(!returningSubscriber)}>{returningSubscriber ? 'New here? Join the email list' : 'Already joined? Get an access link'}</button></>}</DialogContent></Dialog>
   </>;
 }
