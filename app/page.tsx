@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { useScrollPull } from '@/hooks/use-scroll-pull';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import catalog from './catalog.json';
 import films from './films.json';
 
@@ -138,8 +139,8 @@ export default function Home() {
     <a className="skip-link" href="#music">Skip to music</a>
     <header id="top" className="site-header">
       <a className="wordmark" href="#top">KEVIN GEORGE</a>
-      <nav aria-label="Main navigation"><a href="#music">Music</a><a href="#films">Videos</a><a href="#shop">Shop</a></nav>
-      <button className="subscribe-link" onClick={() => setSignupOpen(true)}>Subscribe</button>
+      <nav aria-label="Main navigation"><a href="#music">Music</a><a href="#films">Videos</a><a href="#shop">Shop</a><a href="#tour">Tour</a></nav>
+      <div className="header-actions"><ThemeToggle/><button className="subscribe-link" onClick={() => setSignupOpen(true)}>Subscribe</button></div>
     </header>
     <main className="page-shell">
       <section className="first-listen" aria-labelledby="apologies-title" data-pull>
@@ -185,7 +186,8 @@ export default function Home() {
         <button className="more-link" onClick={() => setShowAllFilms(!showAllFilms)} aria-expanded={showAllFilms} aria-controls="video-list">{showAllFilms ? 'Fewer videos −' : 'More videos +'}</button>
       </section>
 
-      <section id="shop" className="shop-section" data-pull><h2 className="section-label">SHOP</h2><p>Coming soon.</p></section>
+      <section id="shop" className="coming-soon-section" aria-labelledby="shop-heading" data-pull><h2 id="shop-heading" className="section-label">SHOP</h2><p>Coming soon.</p></section>
+      <section id="tour" className="coming-soon-section" aria-labelledby="tour-heading" data-pull><h2 id="tour-heading" className="section-label">TOUR</h2><p>Coming soon.</p></section>
       <section id="connect" className="connect-section" data-pull><h2 className="section-label">SUBSCRIBE</h2><p>Hear and download “Apologies.” Get music, releases, and updates.</p><SignupForm id="footer-email" onSuccess={unlock}/>{unlocked && <div className="subscriber-actions"><button className="text-link" onClick={toggleAudio}>{playing ? 'Pause Apologies' : 'Listen to Apologies'}</button><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div>}</section>
     </main>
     <footer className="site-footer"><span>© {new Date().getFullYear()} Kevin George</span><div><a href="https://www.kevingeorge.xyz/privacy" target="_blank" rel="noreferrer">Privacy</a><a href="https://www.kevingeorge.xyz/terms" target="_blank" rel="noreferrer">Terms</a><a href="#top">Top ↑</a></div></footer>
