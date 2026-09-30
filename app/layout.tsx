@@ -39,7 +39,8 @@ export default function RootLayout({
       <body className="font-sans antialiased min-h-screen">
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
+          storageKey="kevin-george-theme"
           enableSystem
           disableTransitionOnChange
         >

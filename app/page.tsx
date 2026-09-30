@@ -157,7 +157,6 @@ export default function Home() {
           <span className="time">{fmt(playLimit)}</span>
         </div>
         <div className="track-download"><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div></> : <div className="song-gate">
-          <p>Hear it. Download it. Keep it.</p>
           <button className="primary-action" onClick={() => { setReturningSubscriber(false); setSignupOpen(true); }}>Join to hear and download Apologies</button>
           <button className="returning-link" onClick={() => { setReturningSubscriber(true); setSignupOpen(true); }}>Already joined? Get an access link</button>
         </div>}
