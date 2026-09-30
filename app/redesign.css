@@ -90,6 +90,11 @@ body:has(.redesign-dialog) [data-slot=dialog-overlay]{background:rgba(255,255,25
 .signup-dialog[data-slot=dialog-content]{max-width:450px;padding:36px}
 :is(.redesign-page, .redesign-dialog) .unlock-success{font-size:16px;line-height:1.6}:is(.redesign-page, .redesign-dialog) .unlock-success>p{margin:13px 0 20px}
 :is(.redesign-page, .redesign-dialog) .primary-action{display:inline-flex;gap:14px;align-items:center;font-size:14px;border:1px solid #181818;padding:11px 15px}
+:is(.redesign-page, .redesign-dialog) .track-download{margin-top:8px}
+:is(.redesign-page, .redesign-dialog) .download-link{min-height:44px;flex-wrap:wrap;justify-content:center}
+:is(.redesign-page, .redesign-dialog) .download-format{font-size:11px;color:#707070;text-decoration:none}
+:is(.redesign-page, .redesign-dialog) .subscriber-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px}
+:is(.redesign-page, .redesign-dialog) .connect-section>.subscriber-actions{margin-top:24px}
 .redesign-page{overflow-x:clip}
 .redesign-page :is(.first-listen,.cover-button,.video-button){perspective:1100px}
 .redesign-page :is(.apologies-cover,.cover-button img,.video-image){will-change:translate,opacity,filter}
