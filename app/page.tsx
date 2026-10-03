@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { ArrowUpRight, Check, Download, LockKeyhole, Pause, Play, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { ArrowUpRight, Check, Download, Pause, Play, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
@@ -11,7 +11,8 @@ import films from './films.json';
 
 type Album = (typeof catalog)[number];
 type Film = (typeof films)[number];
-const UNLOCK_KEY = 'kevin-george-apologies-unlocked';
+// Keep recognizing subscribers who joined during the early-access release.
+const SUBSCRIBER_KEY = 'kevin-george-apologies-unlocked';
 const records = catalog.slice().reverse();
 const featuredFilms = ['iQHCFUq1GQA', 'qmerpevLK4o', 'q_OJG46cMno'].map(id => films.find(f => f.id === id)!);
 const fmt = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
@@ -20,28 +21,6 @@ function ApologiesDownload({ coolingDown, onDownload }: { coolingDown: boolean; 
   return coolingDown
     ? <span className="download-status" role="status"><Check size={16} aria-hidden="true"/>Download requested. Retry in a moment.</span>
     : <a className="text-link download-link" href="/media/apologies.mp3" download="Kevin George - Apologies.mp3" onClick={event => { if (!onDownload()) event.preventDefault(); }}><Download size={16} aria-hidden="true"/>Download Apologies</a>;
-}
-
-function ReturningSubscriberForm() {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'pending' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (status === 'pending') return;
-    setStatus('pending'); setMessage('');
-    try {
-      const response = await fetch('/api/subscriber-access', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-      const data = await response.json();
-      if (!response.ok) throw new Error(typeof data.error === 'string' ? data.error : 'Could not send your link. Please try again.');
-      setStatus('success'); setEmail('');
-      setMessage('If this email is on the Kevin George list, your access link is on its way. Check your inbox and spam folder.');
-    } catch (error) { setStatus('error'); setMessage(error instanceof Error ? error.message : 'Please try again.'); }
-  }
-  return <form className="signup-form" onSubmit={submit}>
-    {status !== 'success' && <><label htmlFor="access-email">Your email address</label><div className="email-field"><Input id="access-email" type="email" autoComplete="email" required maxLength={254} placeholder="you@email.com" value={email} onChange={event => setEmail(event.target.value)} aria-describedby="access-message" aria-invalid={status === 'error'} disabled={status === 'pending'} className="signup-input"/><button type="submit" disabled={status === 'pending'}>{status === 'pending' ? 'Sending…' : 'Send link'}</button></div></>}
-    <p id="access-message" role="status" className={status === 'error' ? 'form-error' : 'access-message'}>{message}</p>
-  </form>;
 }
 
 function SignupForm({ onSuccess, id }: { onSuccess: () => void; id: string }) {
@@ -56,7 +35,7 @@ function SignupForm({ onSuccess, id }: { onSuccess: () => void; id: string }) {
       const response = await fetch('/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
       const data = await response.json() as { error?: unknown; message?: unknown };
       if (!response.ok) throw new Error(typeof data.error === 'string' ? data.error : 'Could not join the list. Please try again.');
-      setStatus('success'); setMessage(typeof data.message === 'string' ? data.message : 'You’re on the list. The full song is yours.'); setEmail(''); onSuccess();
+      setStatus('success'); setMessage(typeof data.message === 'string' ? data.message : 'You’re on the list. Thanks for joining.'); setEmail(''); onSuccess();
     } catch (error) { setStatus('error'); setMessage(error instanceof Error ? error.message : 'Please try again in a moment.'); }
   }
   return <form onSubmit={submit} className="signup-form">
@@ -76,9 +55,8 @@ export default function Home() {
   const [muted, setMuted] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(161);
-  const [unlocked, setUnlocked] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
-  const [returningSubscriber, setReturningSubscriber] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
   const [selectedFilm, setSelectedFilm] = useState<Film | null>(null);
   const [showAllRecords, setShowAllRecords] = useState(false);
@@ -92,7 +70,7 @@ export default function Home() {
 
   useEffect(() => () => { if (downloadTimer.current) clearTimeout(downloadTimer.current); }, []);
 
-  // Prevent rapid repeat clicks across all three download links. Hosting-level
+  // Prevent rapid repeat clicks across the download links. Hosting-level
   // rate limiting is separate; this is a courtesy delay, not access control.
   function startDownload() {
     if (Date.now() < downloadReadyAt.current) return false;
@@ -105,10 +83,10 @@ export default function Home() {
   useEffect(() => {
     const url = new URL(window.location.href);
     let remembered = false;
-    try { remembered = window.localStorage.getItem(UNLOCK_KEY) === 'true'; } catch { /* Email links also work without storage. */ }
+    try { remembered = window.localStorage.getItem(SUBSCRIBER_KEY) === 'true'; } catch { /* Signup stays available when storage is disabled. */ }
     if (remembered || url.searchParams.get('unlock') === 'apologies') {
-      setUnlocked(true);
-      try { window.localStorage.setItem(UNLOCK_KEY, 'true'); } catch { /* Current-session access remains available. */ }
+      setSubscribed(true);
+      try { window.localStorage.setItem(SUBSCRIBER_KEY, 'true'); } catch { /* Keep the subscription confirmation for this visit. */ }
     }
     if (url.searchParams.get('unlock') === 'apologies') {
       url.searchParams.delete('unlock');
@@ -116,12 +94,11 @@ export default function Home() {
     }
   }, []);
 
-  function unlock() {
-    setUnlocked(true);
-    try { window.localStorage.setItem(UNLOCK_KEY, 'true'); } catch { /* Current-session access remains available. */ }
+  function rememberSubscriber() {
+    setSubscribed(true);
+    try { window.localStorage.setItem(SUBSCRIBER_KEY, 'true'); } catch { /* Keep the subscription confirmation for this visit. */ }
   }
   async function toggleAudio() {
-    if (!unlocked) { setReturningSubscriber(false); setSignupOpen(true); return; }
     const player = audio.current;
     if (!player) return;
     if (!player.paused) { player.pause(); return; }
@@ -144,22 +121,20 @@ export default function Home() {
     </header>
     <main className="page-shell">
       <section className="first-listen" aria-labelledby="apologies-title" data-pull>
-        <button className="apologies-cover" onClick={toggleAudio} aria-label={!unlocked ? 'Join to hear and download Apologies' : playing ? 'Pause Apologies' : 'Play Apologies'} aria-pressed={unlocked ? playing : undefined}>
+        <button className="apologies-cover" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'} aria-pressed={playing}>
           <img src="/media/apologies-cover-final.webp" alt="Apologies cover art: a textured portrait with a black spiked crown against a red background" width="1400" height="1400" fetchPriority="high"/>
-          <span className="cover-play" aria-hidden="true">{!unlocked ? <LockKeyhole size={20}/> : playing ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}</span>
+          <span className="cover-play" aria-hidden="true">{playing ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}</span>
         </button>
         <h1 id="apologies-title">Apologies</h1>
         <p className="release-year">2026</p>
-        {unlocked ? <><div className="inline-player">
+        <div className="inline-player">
           <button className="play-button" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'}>{playing ? <Pause size={16} fill="currentColor"/> : <Play size={16} fill="currentColor"/>}</button>
           <span className="time">{fmt(elapsed)}</span>
           <Slider aria-label="Apologies song position" className="song-slider" min={0} max={playLimit} step={0.1} value={[Math.min(elapsed, playLimit)]} onValueChange={seek}/>
           <span className="time">{fmt(playLimit)}</span>
         </div>
-        <div className="track-download"><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div></> : <div className="song-gate">
-          <button className="primary-action" onClick={() => { setReturningSubscriber(false); setSignupOpen(true); }}>Download</button>
-          <button className="returning-link" onClick={() => { setReturningSubscriber(true); setSignupOpen(true); }}>Already joined? Get an access link</button>
-        </div>}
+        <div className="release-links" aria-label="Apologies streaming services"><a href="https://open.spotify.com/album/50WBHModm4slWaGHj2Nfxp" target="_blank" rel="noreferrer">Spotify</a><a href="https://music.apple.com/us/album/apologies-single/6811124565" target="_blank" rel="noreferrer">Apple Music</a><a href="https://vyd.co/Apologies" target="_blank" rel="noreferrer">All platforms</a></div>
+        <div className="track-download"><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div>
         {audioError && <p className="form-error" role="alert">{audioError}</p>}
       </section>
 
@@ -187,15 +162,15 @@ export default function Home() {
 
       <section id="shop" className="coming-soon-section" aria-labelledby="shop-heading" data-pull><h2 id="shop-heading" className="section-label">SHOP</h2><p>Coming soon.</p></section>
       <section id="tour" className="coming-soon-section" aria-labelledby="tour-heading" data-pull><h2 id="tour-heading" className="section-label">TOUR</h2><p>Coming soon.</p></section>
-      <section id="connect" className="connect-section" data-pull><h2 className="section-label">SUBSCRIBE</h2><p>Hear and download “Apologies.” Get music, releases, and updates.</p><SignupForm id="footer-email" onSuccess={unlock}/>{unlocked && <div className="subscriber-actions"><button className="text-link" onClick={toggleAudio}>{playing ? 'Pause Apologies' : 'Listen to Apologies'}</button><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div>}</section>
+      <section id="connect" className="connect-section" data-pull><h2 className="section-label">SUBSCRIBE</h2><p>Get new music, releases, and updates from Kevin George.</p><SignupForm id="footer-email" onSuccess={rememberSubscriber}/></section>
     </main>
     <footer className="site-footer"><span>© {new Date().getFullYear()} Kevin George</span><div><a href="https://www.kevingeorge.xyz/privacy" target="_blank" rel="noreferrer">Privacy</a><a href="https://www.kevingeorge.xyz/terms" target="_blank" rel="noreferrer">Terms</a><a href="#top">Top ↑</a></div></footer>
 
-    {hasStarted && <aside className="audio-dock" aria-label="Apologies audio player"><span className="dock-track">APOLOGIES</span><div className="dock-controls"><button className="icon-button replay-button" aria-label="Replay Apologies from the beginning" onClick={() => seek(0)}><RotateCcw size={14}/></button><button className="play-button" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'}>{playing ? <Pause size={14} fill="currentColor"/> : <Play size={14} fill="currentColor"/>}</button><span className="time">{fmt(elapsed)}</span><Slider aria-label="Playback position" className="song-slider" min={0} max={playLimit} step={0.1} value={[Math.min(elapsed, playLimit)]} onValueChange={seek}/><span className="time">{fmt(playLimit)}</span><button className="icon-button mute-button" aria-label={muted ? 'Unmute' : 'Mute'} onClick={() => setMuted(!muted)}>{muted ? <VolumeX size={16}/> : <Volume2 size={16}/>}</button></div><button className="dock-unlock" onClick={() => setSignupOpen(true)}>{unlocked ? 'Subscribed' : 'Full song ↗'}</button></aside>}
-    {unlocked && <audio ref={audio} src="/media/apologies.mp3" preload="metadata" muted={muted} onPlay={() => { setPlaying(true); setHasStarted(true); }} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onError={() => setAudioError('The song could not load. Please refresh and try again.')} onLoadedMetadata={() => { if (audio.current && Number.isFinite(audio.current.duration)) setDuration(audio.current.duration); }} onTimeUpdate={() => { if (audio.current) setElapsed(audio.current.currentTime); }}/>}
+    {hasStarted && <aside className="audio-dock" aria-label="Apologies audio player"><span className="dock-track">APOLOGIES</span><div className="dock-controls"><button className="icon-button replay-button" aria-label="Replay Apologies from the beginning" onClick={() => seek(0)}><RotateCcw size={14}/></button><button className="play-button" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'}>{playing ? <Pause size={14} fill="currentColor"/> : <Play size={14} fill="currentColor"/>}</button><span className="time">{fmt(elapsed)}</span><Slider aria-label="Playback position" className="song-slider" min={0} max={playLimit} step={0.1} value={[Math.min(elapsed, playLimit)]} onValueChange={seek}/><span className="time">{fmt(playLimit)}</span><button className="icon-button mute-button" aria-label={muted ? 'Unmute' : 'Mute'} onClick={() => setMuted(!muted)}>{muted ? <VolumeX size={16}/> : <Volume2 size={16}/>}</button></div><button className="dock-unlock" onClick={() => setSignupOpen(true)}>{subscribed ? 'Subscribed' : 'Subscribe'}</button></aside>}
+    <audio ref={audio} src="/media/apologies.mp3" preload="metadata" muted={muted} onPlay={() => { setPlaying(true); setHasStarted(true); }} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onError={() => setAudioError('The song could not load. Please refresh and try again.')} onLoadedMetadata={() => { if (audio.current && Number.isFinite(audio.current.duration)) setDuration(audio.current.duration); }} onTimeUpdate={() => { if (audio.current) setElapsed(audio.current.currentTime); }}/>
 
     <Dialog open={selectedAlbum !== null} onOpenChange={open => { if (!open) setSelectedAlbum(null); }}><DialogContent className="album-dialog redesign-dialog">{selectedAlbum && <><DialogHeader><DialogDescription>{selectedAlbum.year} · Kevin George</DialogDescription><DialogTitle>{selectedAlbum.title}</DialogTitle></DialogHeader><div className="album-dialog-body"><img src={selectedAlbum.coverImage} alt={`${selectedAlbum.title} cover`}/><div>{selectedAlbum.tracklist.length > 0 ? <ol className="tracklist">{selectedAlbum.tracklist.map((track, i) => <li key={track}><span>{String(i + 1).padStart(2, '0')}</span>{track}</li>)}</ol> : <p className="record-intro">Listen below.</p>}</div></div><iframe title={`Spotify player for ${selectedAlbum.title}`} src={`https://open.spotify.com/embed/album/${selectedAlbum.spotifyLink.split('/album/')[1].split('?')[0]}?utm_source=generator&theme=0`} width="100%" height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" className="spotify-player"/><div className="stream-links"><a href={selectedAlbum.spotifyLink} target="_blank" rel="noreferrer">Listen on Spotify <ArrowUpRight size={16}/></a><a href={selectedAlbum.appleMusicLink} target="_blank" rel="noreferrer">Apple Music <ArrowUpRight size={16}/></a></div></>}</DialogContent></Dialog>
     <Dialog open={selectedFilm !== null} onOpenChange={open => { if (!open) setSelectedFilm(null); }}><DialogContent className="video-dialog redesign-dialog">{selectedFilm && <><DialogHeader><DialogDescription>Kevin George · Official music video</DialogDescription><DialogTitle>{selectedFilm.title}</DialogTitle></DialogHeader><iframe title={`${selectedFilm.title} music video`} src={`https://www.youtube.com/embed/${selectedFilm.id}?autoplay=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen/><a className="text-link" href={`https://www.youtube.com/watch?v=${selectedFilm.id}`} target="_blank" rel="noreferrer">Watch on YouTube <ArrowUpRight size={16}/></a></>}</DialogContent></Dialog>
-    <Dialog open={signupOpen} onOpenChange={setSignupOpen}><DialogContent className="signup-dialog redesign-dialog"><DialogHeader><DialogTitle>{!unlocked && returningSubscriber ? 'WELCOME BACK' : 'SUBSCRIBE'}</DialogTitle><DialogDescription>{!unlocked && returningSubscriber ? 'Get an Apologies access link at the email you joined with. No need to subscribe again.' : 'Join the email list to hear and download “Apologies,” plus get updates from Kevin George.'}</DialogDescription></DialogHeader>{unlocked ? <div className="unlock-success"><Check size={28}/><p>You’re connected. Listen to the full song or download it to keep.</p><div className="subscriber-actions"><button className="primary-action" onClick={() => { setSignupOpen(false); void toggleAudio(); }}>Listen <Play size={16}/></button><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div></div> : <>{returningSubscriber ? <ReturningSubscriberForm/> : <SignupForm id="dialog-email" onSuccess={unlock}/>}<button className="returning-link" onClick={() => setReturningSubscriber(!returningSubscriber)}>{returningSubscriber ? 'New here? Join the email list' : 'Already joined? Get an access link'}</button></>}</DialogContent></Dialog>
+    <Dialog open={signupOpen} onOpenChange={setSignupOpen}><DialogContent className="signup-dialog redesign-dialog"><DialogHeader><DialogTitle>SUBSCRIBE</DialogTitle><DialogDescription>Join the email list for new music, releases, and updates from Kevin George.</DialogDescription></DialogHeader>{subscribed ? <div className="unlock-success"><Check size={28}/><p>You’re on the list. Thanks for being here.</p><div className="subscriber-actions"><button className="primary-action" onClick={() => { setSignupOpen(false); void toggleAudio(); }}>Listen <Play size={16}/></button><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div></div> : <SignupForm id="dialog-email" onSuccess={rememberSubscriber}/>}</DialogContent></Dialog>
   </>;
 }
