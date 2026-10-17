@@ -134,3 +134,5 @@ body:has(.redesign-dialog) [data-slot=dialog-overlay]{background:rgba(255,255,25
 
 :is(.redesign-page, .redesign-dialog) .release .inline-player{max-width:330px;margin:17px auto 0}
 :is(.redesign-page, .redesign-dialog) .release-links{flex-wrap:wrap}
+.redesign-page .dock-track{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:700px){.redesign-page .dock-track{max-width:28vw}}

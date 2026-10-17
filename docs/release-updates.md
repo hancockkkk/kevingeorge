@@ -2,8 +2,10 @@
 
 The homepage reads `app/releases.json` in newest-first order. The first entry is
 featured; the others appear before the older album catalog. Keep every previous
-entry. Apologies retains its native full-song player and download in the music
-collection. Other releases use the existing Spotify dialog and streaming links.
+entry. Releases with an `audio` object use the native full-song player and
+download; other releases use the Spotify dialog and streaming links. One shared
+audio element prevents two songs from playing together. Download buttons share
+the existing 30-second courtesy cooldown.
 
 ## Official sources
 
@@ -24,6 +26,16 @@ supported; retain an original asset supplied by the artist when available.
 Streaming embeds do not provide an unrestricted full-song audio file. Do not
 extract audio from streaming services. Only enable native playback or downloads
 when the artist supplies the file and authorizes that use.
+
+For supplied audio, create a 320 kbps MP3 at 44.1 kHz, preserving the original
+file. Put the web copy in `public/media/` and add `audio.src`,
+`audio.downloadName`, and the measured `audio.duration` in seconds to the release
+entry. The same controls work when that release moves into the older collection.
+Check switching between songs, seeking, playback, and actual file downloads.
+Vercel's enabled "Protect song audio from rapid requests" rule covers both
+`/media/apologies.mp3` and `/media/whered-she-go.mp3` at 60 requests per IP per
+60 seconds. Include new authorized audio paths without removing existing paths
+or changing the request limit.
 
 ## Validate and publish
 

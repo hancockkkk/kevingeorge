@@ -11,7 +11,12 @@
     ],
     "spotifyLink": "https://open.spotify.com/album/5Um6zJvqeqt7vVRf6KpEoT",
     "appleMusicLink": "https://music.apple.com/us/album/whered-she-go-single/6822035934",
-    "allPlatformsLink": ""
+    "allPlatformsLink": "",
+    "audio": {
+      "src": "/media/whered-she-go.mp3",
+      "downloadName": "Kevin George - WHERE'D SHE GO.mp3",
+      "duration": 142.147664
+    }
   },
   {
     "id": "single-apologies",
@@ -25,6 +30,11 @@
     ],
     "spotifyLink": "https://open.spotify.com/album/50WBHModm4slWaGHj2Nfxp",
     "appleMusicLink": "https://music.apple.com/us/album/apologies-single/6811124565",
-    "allPlatformsLink": "https://vyd.co/Apologies"
+    "allPlatformsLink": "https://vyd.co/Apologies",
+    "audio": {
+      "src": "/media/apologies.mp3",
+      "downloadName": "Kevin George - Apologies.mp3",
+      "duration": 161.684229
+    }
   }
 ]

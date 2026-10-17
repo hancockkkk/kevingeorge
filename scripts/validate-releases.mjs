@@ -31,5 +31,11 @@ for (const release of releases) {
     assert(artwork.protocol === 'https:' && ['i.scdn.co', 'is1-ssl.mzstatic.com'].includes(artwork.hostname), 'Use verified official artwork.');
   }
   if (release.allPlatformsLink) assert(new URL(release.allPlatformsLink).protocol === 'https:', 'Use an HTTPS smartlink.');
+  if (release.audio) {
+    assert(/^\/media\/[a-z0-9-]+\.mp3$/.test(release.audio.src), 'Use a local MP3 playback/download path.');
+    await access(new URL(`../public${release.audio.src}`, import.meta.url));
+    assert(Number.isFinite(release.audio.duration) && release.audio.duration > 0, 'Audio duration must be positive.');
+    assert(typeof release.audio.downloadName === 'string' && release.audio.downloadName.endsWith('.mp3') && !/[\\/]/.test(release.audio.downloadName), 'Use an MP3 download filename without a path.');
+  }
 }
 console.log(`Validated ${releases.length} releases; featured: ${releases[0].title}.`);

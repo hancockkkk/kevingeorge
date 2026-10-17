@@ -10,7 +10,10 @@ import catalog from './catalog.json';
 import films from './films.json';
 import releases from './releases.json';
 
-type Album = (typeof catalog)[number] & { allPlatformsLink?: string };
+type Album = (typeof catalog)[number] & {
+  allPlatformsLink?: string;
+  audio?: { src: string; downloadName: string; duration: number };
+};
 type Film = (typeof films)[number];
 // Keep recognizing subscribers who joined during the early-access release.
 const SUBSCRIBER_KEY = 'kevin-george-apologies-unlocked';
@@ -19,10 +22,11 @@ const records: Album[] = [...releases.slice(1), ...catalog.slice().reverse()];
 const featuredFilms = ['iQHCFUq1GQA', 'qmerpevLK4o', 'q_OJG46cMno'].map(id => films.find(f => f.id === id)!);
 const fmt = (seconds: number) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
 
-function ApologiesDownload({ coolingDown, onDownload }: { coolingDown: boolean; onDownload: () => boolean }) {
+function SongDownload({ album, coolingDown, onDownload }: { album: Album; coolingDown: boolean; onDownload: () => boolean }) {
+  if (!album.audio) return null;
   return coolingDown
     ? <span className="download-status" role="status"><Check size={16} aria-hidden="true"/>Download requested. Retry in a moment.</span>
-    : <a className="text-link download-link" href="/media/apologies.mp3" download="Kevin George - Apologies.mp3" onClick={event => { if (!onDownload()) event.preventDefault(); }}><Download size={16} aria-hidden="true"/>Download Apologies</a>;
+    : <a className="text-link download-link" href={album.audio.src} download={album.audio.downloadName} onClick={event => { if (!onDownload()) event.preventDefault(); }}><Download size={16} aria-hidden="true"/>Download {album.title}</a>;
 }
 
 function SignupForm({ onSuccess, id }: { onSuccess: () => void; id: string }) {
@@ -56,7 +60,8 @@ export default function Home() {
   const [hasStarted, setHasStarted] = useState(false);
   const [muted, setMuted] = useState(false);
   const [elapsed, setElapsed] = useState(0);
-  const [duration, setDuration] = useState(161);
+  const [duration, setDuration] = useState(0);
+  const [activeTrack, setActiveTrack] = useState<Album | null>(null);
   const [subscribed, setSubscribed] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
@@ -100,16 +105,59 @@ export default function Home() {
     setSubscribed(true);
     try { window.localStorage.setItem(SUBSCRIBER_KEY, 'true'); } catch { /* Keep the subscription confirmation for this visit. */ }
   }
-  async function toggleAudio() {
+  function selectTrack(album: Album) {
     const player = audio.current;
-    if (!player) return;
-    if (!player.paused) { player.pause(); return; }
-    setAudioError('');
-    try { await player.play(); } catch { setAudioError('Audio could not start. Tap play to try again.'); }
+    if (!player || !album.audio) return null;
+    if (player.getAttribute('src') !== album.audio.src) {
+      player.pause();
+      player.src = album.audio.src;
+      player.load();
+      setActiveTrack(album);
+      setElapsed(0);
+      setDuration(album.audio.duration);
+      setAudioError('');
+    }
+    return player;
   }
-  function seek(value: number | readonly number[]) {
-    const next = Math.min(Array.isArray(value) ? value[0] : value as number, playLimit);
-    if (audio.current) { audio.current.currentTime = next; setElapsed(next); }
+  async function toggleAudio(album: Album) {
+    const isCurrent = audio.current?.getAttribute('src') === album.audio?.src;
+    const player = selectTrack(album);
+    if (!player) return;
+    if (isCurrent && !player.paused) { player.pause(); return; }
+    setAudioError('');
+    try { await player.play(); } catch (error) {
+      // Switching tracks can cancel a pending play request for the previous song.
+      if (player.getAttribute('src') === album.audio?.src && !(error instanceof DOMException && error.name === 'AbortError')) {
+        setAudioError('Audio could not start. Tap play to try again.');
+      }
+    }
+  }
+  function seekTrack(album: Album, value: number | readonly number[]) {
+    const player = selectTrack(album);
+    if (!player || !album.audio) return;
+    const limit = Number.isFinite(player.duration) ? player.duration : album.audio.duration;
+    const next = Math.max(0, Math.min(Array.isArray(value) ? value[0] : value as number, limit));
+    player.currentTime = next;
+    setElapsed(next);
+  }
+  function isPlaying(album: Album) { return activeTrack?.id === album.id && playing; }
+  function listenTo(album: Album) {
+    if (album.audio) void toggleAudio(album);
+    else openAlbum(album);
+  }
+  function renderPlayer(album: Album) {
+    if (!album.audio) return null;
+    const isCurrent = activeTrack?.id === album.id;
+    const limit = isCurrent ? duration : album.audio.duration;
+    return <>
+      <div className="inline-player">
+        <button className="play-button" onClick={() => void toggleAudio(album)} aria-label={`${isPlaying(album) ? 'Pause' : 'Play'} ${album.title}`}>{isPlaying(album) ? <Pause size={16} fill="currentColor"/> : <Play size={16} fill="currentColor"/>}</button>
+        <span className="time">{fmt(isCurrent ? elapsed : 0)}</span>
+        <Slider aria-label={`${album.title} song position`} className="song-slider" min={0} max={limit} step={0.1} value={[isCurrent ? Math.min(elapsed, limit) : 0]} onValueChange={value => seekTrack(album, value)}/>
+        <span className="time">{fmt(limit)}</span>
+      </div>
+      {isCurrent && audioError && <p className="form-error" role="alert">{audioError}</p>}
+    </>;
   }
   function openFilm(film: Film) { audio.current?.pause(); setSelectedFilm(film); }
   function openAlbum(album: Album) { audio.current?.pause(); setSelectedAlbum(album); }
@@ -123,43 +171,32 @@ export default function Home() {
     </header>
     <main className="page-shell">
       <section className="first-listen" aria-labelledby="latest-release-title" data-pull>
-        <button className="apologies-cover" onClick={() => openAlbum(latestRelease)} aria-label={`Listen to ${latestRelease.title}`}>
+        <button className="apologies-cover" onClick={() => listenTo(latestRelease)} aria-label={`${latestRelease.audio ? (isPlaying(latestRelease) ? 'Pause' : 'Play') : 'Listen to'} ${latestRelease.title}`}>
           <img src={latestRelease.coverImage} alt={`${latestRelease.title} cover`} width="640" height="640" fetchPriority="high"/>
-          <span className="cover-play" aria-hidden="true"><Play size={20} fill="currentColor"/></span>
+          <span className="cover-play" aria-hidden="true">{isPlaying(latestRelease) ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}</span>
         </button>
         <h1 id="latest-release-title">{latestRelease.title}</h1>
         <p className="release-year">{latestRelease.year}</p>
+        {renderPlayer(latestRelease)}
         <div className="release-links" aria-label={`${latestRelease.title} streaming services`}>
           <a href={latestRelease.spotifyLink} target="_blank" rel="noreferrer">Spotify</a>
           <a href={latestRelease.appleMusicLink} target="_blank" rel="noreferrer">Apple Music</a>
-          <button onClick={() => openAlbum(latestRelease)}>Listen</button>
+          {!latestRelease.audio && <button onClick={() => openAlbum(latestRelease)}>Listen</button>}
           {latestRelease.allPlatformsLink && <a href={latestRelease.allPlatformsLink} target="_blank" rel="noreferrer">All platforms</a>}
         </div>
+        {latestRelease.audio && <div className="track-download"><SongDownload album={latestRelease} coolingDown={downloadCoolingDown} onDownload={startDownload}/></div>}
       </section>
 
       <section id="music" className="music-section" aria-labelledby="music-heading">
         <h2 id="music-heading" className="section-label">MUSIC</h2>
         <div id="record-collection" className="release-list">
-          {(showAllRecords ? records : records.slice(0, 4)).map((album, i) => album.id === 'single-apologies' ? <article id="apologies" className="release" key={album.id} aria-labelledby="apologies-title" data-pull>
-        <button className="cover-button" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'} aria-pressed={playing}>
-          <img src="/media/apologies-cover-final.webp" alt="Apologies cover art: a textured portrait with a black spiked crown against a red background" width="1400" height="1400" loading="lazy"/>
-        </button>
-        <h3 id="apologies-title">Apologies</h3>
-        <p className="release-year">2026</p>
-        <div className="inline-player">
-          <button className="play-button" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'}>{playing ? <Pause size={16} fill="currentColor"/> : <Play size={16} fill="currentColor"/>}</button>
-          <span className="time">{fmt(elapsed)}</span>
-          <Slider aria-label="Apologies song position" className="song-slider" min={0} max={playLimit} step={0.1} value={[Math.min(elapsed, playLimit)]} onValueChange={seek}/>
-          <span className="time">{fmt(playLimit)}</span>
-        </div>
-        <div className="release-links" aria-label="Apologies streaming services"><a href="https://open.spotify.com/album/50WBHModm4slWaGHj2Nfxp" target="_blank" rel="noreferrer">Spotify</a><a href="https://music.apple.com/us/album/apologies-single/6811124565" target="_blank" rel="noreferrer">Apple Music</a><a href="https://vyd.co/Apologies" target="_blank" rel="noreferrer">All platforms</a></div>
-        <div className="track-download"><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div>
-        {audioError && <p className="form-error" role="alert">{audioError}</p>}
-      </article> : <article className="release" key={album.id} data-pull>
-            <button className="cover-button" onClick={() => openAlbum(album)} aria-label={`Listen to ${album.title}`}><img src={album.coverImage} alt={`${album.title} cover`} loading={i === 0 ? 'eager' : 'lazy'} width="420" height="420"/></button>
-            <h3><button onClick={() => openAlbum(album)}>{album.title}</button></h3>
+          {(showAllRecords ? records : records.slice(0, 4)).map((album, i) => <article id={album.id === 'single-apologies' ? 'apologies' : album.id} className="release" key={album.id} data-pull>
+            <button className="cover-button" onClick={() => listenTo(album)} aria-label={`${album.audio ? (isPlaying(album) ? 'Pause' : 'Play') : 'Listen to'} ${album.title}`}><img src={album.coverImage} alt={`${album.title} cover`} loading={i === 0 ? 'eager' : 'lazy'} width="420" height="420"/></button>
+            <h3><button onClick={() => listenTo(album)}>{album.title}</button></h3>
             <p className="release-year">{album.year}</p>
-            <div className="release-links"><a href={album.spotifyLink} target="_blank" rel="noreferrer">Spotify</a><a href={album.appleMusicLink} target="_blank" rel="noreferrer">Apple Music</a><button onClick={() => openAlbum(album)}>Listen</button></div>
+            {renderPlayer(album)}
+            <div className="release-links"><a href={album.spotifyLink} target="_blank" rel="noreferrer">Spotify</a><a href={album.appleMusicLink} target="_blank" rel="noreferrer">Apple Music</a>{!album.audio && <button onClick={() => openAlbum(album)}>Listen</button>}{album.allPlatformsLink && <a href={album.allPlatformsLink} target="_blank" rel="noreferrer">All platforms</a>}</div>
+            {album.audio && <div className="track-download"><SongDownload album={album} coolingDown={downloadCoolingDown} onDownload={startDownload}/></div>}
           </article>)}
         </div>
         <button className="more-link" onClick={() => setShowAllRecords(!showAllRecords)} aria-expanded={showAllRecords} aria-controls="record-collection">{showAllRecords ? 'Less music −' : 'More music +'}</button>
@@ -180,11 +217,12 @@ export default function Home() {
     </main>
     <footer className="site-footer"><span>© {new Date().getFullYear()} Kevin George</span><div><a href="https://www.kevingeorge.xyz/privacy" target="_blank" rel="noreferrer">Privacy</a><a href="https://www.kevingeorge.xyz/terms" target="_blank" rel="noreferrer">Terms</a><a href="#top">Top ↑</a></div></footer>
 
-    {hasStarted && <aside className="audio-dock" aria-label="Apologies audio player"><span className="dock-track">APOLOGIES</span><div className="dock-controls"><button className="icon-button replay-button" aria-label="Replay Apologies from the beginning" onClick={() => seek(0)}><RotateCcw size={14}/></button><button className="play-button" onClick={toggleAudio} aria-label={playing ? 'Pause Apologies' : 'Play Apologies'}>{playing ? <Pause size={14} fill="currentColor"/> : <Play size={14} fill="currentColor"/>}</button><span className="time">{fmt(elapsed)}</span><Slider aria-label="Playback position" className="song-slider" min={0} max={playLimit} step={0.1} value={[Math.min(elapsed, playLimit)]} onValueChange={seek}/><span className="time">{fmt(playLimit)}</span><button className="icon-button mute-button" aria-label={muted ? 'Unmute' : 'Mute'} onClick={() => setMuted(!muted)}>{muted ? <VolumeX size={16}/> : <Volume2 size={16}/>}</button></div><button className="dock-unlock" onClick={() => setSignupOpen(true)}>{subscribed ? 'Subscribed' : 'Subscribe'}</button></aside>}
-    <audio ref={audio} src="/media/apologies.mp3" preload="metadata" muted={muted} onPlay={() => { setPlaying(true); setHasStarted(true); }} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onError={() => setAudioError('The song could not load. Please refresh and try again.')} onLoadedMetadata={() => { if (audio.current && Number.isFinite(audio.current.duration)) setDuration(audio.current.duration); }} onTimeUpdate={() => { if (audio.current) setElapsed(audio.current.currentTime); }}/>
+    {hasStarted && activeTrack && <aside className="audio-dock" aria-label={`${activeTrack.title} audio player`}><span className="dock-track">{activeTrack.title}</span><div className="dock-controls"><button className="icon-button replay-button" aria-label={`Replay ${activeTrack.title} from the beginning`} onClick={() => seekTrack(activeTrack, 0)}><RotateCcw size={14}/></button><button className="play-button" onClick={() => void toggleAudio(activeTrack)} aria-label={`${playing ? 'Pause' : 'Play'} ${activeTrack.title}`}>{playing ? <Pause size={14} fill="currentColor"/> : <Play size={14} fill="currentColor"/>}</button><span className="time">{fmt(elapsed)}</span><Slider aria-label="Playback position" className="song-slider" min={0} max={playLimit} step={0.1} value={[Math.min(elapsed, playLimit)]} onValueChange={value => seekTrack(activeTrack, value)}/><span className="time">{fmt(playLimit)}</span><button className="icon-button mute-button" aria-label={muted ? 'Unmute' : 'Mute'} onClick={() => setMuted(!muted)}>{muted ? <VolumeX size={16}/> : <Volume2 size={16}/>}</button></div><button className="dock-unlock" onClick={() => setSignupOpen(true)}>{subscribed ? 'Subscribed' : 'Subscribe'}</button></aside>}
+    <audio ref={audio} preload="metadata" muted={muted} onPlay={() => { setPlaying(true); setHasStarted(true); }} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onError={() => setAudioError('The song could not load. Please refresh and try again.')} onLoadedMetadata={() => { if (audio.current && Number.isFinite(audio.current.duration)) setDuration(audio.current.duration); }} onTimeUpdate={() => { if (audio.current) setElapsed(audio.current.currentTime); }}/>
+
 
     <Dialog open={selectedAlbum !== null} onOpenChange={open => { if (!open) setSelectedAlbum(null); }}><DialogContent className="album-dialog redesign-dialog">{selectedAlbum && <><DialogHeader><DialogDescription>{selectedAlbum.year} · Kevin George</DialogDescription><DialogTitle>{selectedAlbum.title}</DialogTitle></DialogHeader><div className="album-dialog-body"><img src={selectedAlbum.coverImage} alt={`${selectedAlbum.title} cover`}/><div>{selectedAlbum.tracklist.length > 0 ? <ol className="tracklist">{selectedAlbum.tracklist.map((track, i) => <li key={track}><span>{String(i + 1).padStart(2, '0')}</span>{track}</li>)}</ol> : <p className="record-intro">Listen below.</p>}</div></div><iframe title={`Spotify player for ${selectedAlbum.title}`} src={`https://open.spotify.com/embed/album/${selectedAlbum.spotifyLink.split('/album/')[1].split('?')[0]}?utm_source=generator&theme=0`} width="100%" height="152" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" className="spotify-player"/><div className="stream-links"><a href={selectedAlbum.spotifyLink} target="_blank" rel="noreferrer">Listen on Spotify <ArrowUpRight size={16}/></a><a href={selectedAlbum.appleMusicLink} target="_blank" rel="noreferrer">Apple Music <ArrowUpRight size={16}/></a></div></>}</DialogContent></Dialog>
     <Dialog open={selectedFilm !== null} onOpenChange={open => { if (!open) setSelectedFilm(null); }}><DialogContent className="video-dialog redesign-dialog">{selectedFilm && <><DialogHeader><DialogDescription>Kevin George · Official music video</DialogDescription><DialogTitle>{selectedFilm.title}</DialogTitle></DialogHeader><iframe title={`${selectedFilm.title} music video`} src={`https://www.youtube.com/embed/${selectedFilm.id}?autoplay=1&rel=0`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen/><a className="text-link" href={`https://www.youtube.com/watch?v=${selectedFilm.id}`} target="_blank" rel="noreferrer">Watch on YouTube <ArrowUpRight size={16}/></a></>}</DialogContent></Dialog>
-    <Dialog open={signupOpen} onOpenChange={setSignupOpen}><DialogContent className="signup-dialog redesign-dialog"><DialogHeader><DialogTitle>SUBSCRIBE</DialogTitle><DialogDescription>Join the email list for new music, releases, and updates from Kevin George.</DialogDescription></DialogHeader>{subscribed ? <div className="unlock-success"><Check size={28}/><p>You’re on the list. Thanks for being here.</p><div className="subscriber-actions"><button className="primary-action" onClick={() => { setSignupOpen(false); openAlbum(latestRelease); }}>Listen <Play size={16}/></button><ApologiesDownload coolingDown={downloadCoolingDown} onDownload={startDownload}/></div></div> : <SignupForm id="dialog-email" onSuccess={rememberSubscriber}/>}</DialogContent></Dialog>
+    <Dialog open={signupOpen} onOpenChange={setSignupOpen}><DialogContent className="signup-dialog redesign-dialog"><DialogHeader><DialogTitle>SUBSCRIBE</DialogTitle><DialogDescription>Join the email list for new music, releases, and updates from Kevin George.</DialogDescription></DialogHeader>{subscribed ? <div className="unlock-success"><Check size={28}/><p>You’re on the list. Thanks for being here.</p><div className="subscriber-actions"><button className="primary-action" onClick={() => { setSignupOpen(false); listenTo(latestRelease); }}>Listen <Play size={16}/></button><SongDownload album={latestRelease} coolingDown={downloadCoolingDown} onDownload={startDownload}/></div></div> : <SignupForm id="dialog-email" onSuccess={rememberSubscriber}/>}</DialogContent></Dialog>
   </>;
 }
