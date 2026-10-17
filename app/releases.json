@@ -1,0 +1,30 @@
+[
+  {
+    "id": "single-whered-she-go",
+    "title": "WHERE'D SHE GO",
+    "year": "2026",
+    "releaseDate": "2026-10-16",
+    "color": "#111111",
+    "coverImage": "https://i.scdn.co/image/ab67616d0000b2735c6ef651aa72f406920b5a91",
+    "tracklist": [
+      "WHERE'D SHE GO"
+    ],
+    "spotifyLink": "https://open.spotify.com/album/5Um6zJvqeqt7vVRf6KpEoT",
+    "appleMusicLink": "https://music.apple.com/us/album/whered-she-go-single/6822035934",
+    "allPlatformsLink": ""
+  },
+  {
+    "id": "single-apologies",
+    "title": "Apologies",
+    "year": "2026",
+    "releaseDate": "2026-10-02",
+    "color": "#bd0000",
+    "coverImage": "/media/apologies-cover-final.webp",
+    "tracklist": [
+      "Apologies"
+    ],
+    "spotifyLink": "https://open.spotify.com/album/50WBHModm4slWaGHj2Nfxp",
+    "appleMusicLink": "https://music.apple.com/us/album/apologies-single/6811124565",
+    "allPlatformsLink": "https://vyd.co/Apologies"
+  }
+]
